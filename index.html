@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DS4MFG · Student Statistics Cheatsheet</title>
+<meta name="description" content="A fast, student-friendly statistics reference for DS4MFG with formulas, Python examples, interpretation notes, common mistakes, and interactive manufacturing quality visuals.">
+<meta name="theme-color" content="#10243D">
+<meta property="og:title" content="DS4MFG Student Statistics Cheatsheet">
+<meta property="og:description" content="Formula, code, and interpretation help for DS4MFG statistics and manufacturing quality topics.">
+<meta property="og:type" content="website">
+<script>
+try{
+  var savedTheme = localStorage.getItem("ds4mfg-theme");
+  if(savedTheme) document.documentElement.dataset.theme = savedTheme;
+}catch(e){}
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<style>
+  :root{
+    color-scheme:dark;
+    --bg:#0C1117; --panel:#131A22; --panel2:#0F151C; --raise:#18212B;
+    --line:#1F2A35; --line2:#18222C;
+    --ink:#E8EDF2; --mute:#94A2B0; --faint:#66727E;
+    --ac:#F0B441; --ac-soft:rgba(240,180,65,.14); --ac-line:rgba(240,180,65,.45);
+    --ok:#4FCB8A; --bad:#F0625D; --bad-soft:rgba(240,98,93,.22);
+    --spec:#6FB4F2; --spec-soft:rgba(111,180,242,.16);
+    --warn-soft:rgba(240,180,65,.26);
+    --grid:rgba(232,237,242,.05);
+    --disp:'Instrument Serif',Georgia,serif;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --math:'IBM Plex Serif',Georgia,serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:light){
+    :root:not([data-theme="dark"]){
+      color-scheme:light;
+      --bg:#FBFAF7; --panel:#FFFFFF; --panel2:#F4F2EC; --raise:#F7F5F0;
+      --line:#E3DFD6; --line2:#ECE9E2;
+      --ink:#171E26; --mute:#5D6873; --faint:#8C959E;
+      --ac:#B07912; --ac-soft:rgba(176,121,18,.12); --ac-line:rgba(176,121,18,.45);
+      --ok:#1F8A55; --bad:#C7423D; --bad-soft:rgba(199,66,61,.18);
+      --spec:#2B6CB0; --spec-soft:rgba(43,108,176,.13);
+      --warn-soft:rgba(176,121,18,.22);
+      --grid:rgba(23,30,38,.06);
+    }
+  }
+  :root[data-theme="light"]{
+    color-scheme:light;
+    --bg:#FBFAF7; --panel:#FFFFFF; --panel2:#F4F2EC; --raise:#F7F5F0;
+    --line:#E3DFD6; --line2:#ECE9E2;
+    --ink:#171E26; --mute:#5D6873; --faint:#8C959E;
+    --ac:#B07912; --ac-soft:rgba(176,121,18,.12); --ac-line:rgba(176,121,18,.45);
+    --ok:#1F8A55; --bad:#C7423D; --bad-soft:rgba(199,66,61,.18);
+    --spec:#2B6CB0; --spec-soft:rgba(43,108,176,.13);
+    --warn-soft:rgba(176,121,18,.22);
+    --grid:rgba(23,30,38,.06);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+  body{background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:15.5px; line-height:1.62; margin:0; -webkit-font-smoothing:antialiased;}
+  a{color:var(--ac)}
+  .skip-link{position:absolute; left:12px; top:12px; z-index:1000; transform:translateY(-160%); padding:8px 11px; border-radius:8px; background:var(--ink); color:var(--panel); text-decoration:none; font:600 12px var(--sans);}
+  .skip-link:focus{transform:translateY(0); outline:3px solid var(--ac)}
+  .app{display:grid; grid-template-columns:230px minmax(0,1fr); gap:0; max-width:1280px; margin:0 auto;}
+  @media(max-width:980px){.app{grid-template-columns:1fr}}
+
+  /* ---------- rail ---------- */
+  .rail{position:sticky; top:env(safe-area-inset-top,0px); height:100vh; height:100dvh; overflow:auto; padding:26px 18px 30px 22px; border-right:1px solid var(--line); background:var(--bg);}
+  @media(max-width:980px){.rail{position:sticky; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:12px 18px; z-index:30;}}
+  .brand{font-family:var(--disp); font-size:26px; letter-spacing:.01em; line-height:1;}
+  .brand i{color:var(--ac); font-style:italic}
+  .brand-sub{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-top:5px;}
+  .search{margin:16px 0 14px; position:relative;}
+  .search input{width:100%; font-family:var(--sans); font-size:13.5px; padding:8px 10px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--ink);}
+  .search input:focus{outline:2px solid var(--ac); outline-offset:1px; border-color:transparent}
+  .search .n{position:absolute; right:9px; top:9px; font-family:var(--mono); font-size:10.5px; color:var(--faint); pointer-events:none;}
+  nav ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px;}
+  nav a{display:grid; grid-template-columns:24px 1fr; gap:6px; align-items:baseline; padding:6px 8px; border-radius:5px; text-decoration:none; color:var(--mute); font-size:13.5px;}
+  nav a .k{font-family:var(--mono); font-size:10.5px; color:var(--faint);}
+  nav a:hover,nav a:focus{background:var(--panel); color:var(--ink);}
+  nav a.on{background:var(--ac-soft); color:var(--ink);}
+  nav a.on .k{color:var(--ac)}
+  @media(max-width:980px){
+    .search{margin:10px 0 8px}
+    nav ol{flex-direction:row; flex-wrap:wrap; gap:4px}
+    nav a{grid-template-columns:auto; padding:4px 9px; font-size:12.5px; border:1px solid var(--line);}
+    nav a .k{display:none}
+  }
+  .rail-foot{margin-top:22px; font-size:11.5px; color:var(--faint); line-height:1.5}
+  @media(max-width:980px){.rail-foot{display:none}}
+
+  /* ---------- main ---------- */
+  main{min-width:0; padding:0 28px 70px; padding-left:34px;}
+  @media(max-width:980px){main{padding:0 18px 56px}}
+
+  .hero{padding-block:34px 10px;}
+  .hero h1{font-family:var(--disp); font-size:clamp(40px,6vw,66px); font-weight:400; line-height:.98; letter-spacing:-.01em; margin:0; text-wrap:balance;}
+  .hero h1 i{color:var(--ac)}
+  .hero .lede{font-size:17px; color:var(--mute); max-width:58ch; margin:14px 0 0;}
+  .hero .lede b{color:var(--ink); font-weight:500}
+  .unofficial{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); margin-top:10px;}
+
+  /* ---------- figure panel ---------- */
+  .fig{background:var(--panel); border:1px solid var(--line); border-radius:10px; margin:22px 0 8px; overflow:hidden;}
+  .fig-top{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:11px 16px; border-bottom:1px solid var(--line2); flex-wrap:wrap;}
+  .fig-title{font-family:var(--mono); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ac);}
+  .fig-status{font-family:var(--mono); font-size:11.5px; color:var(--mute);}
+  .fig-status b{color:var(--ok); font-weight:500}
+  .fig-status b.bad{color:var(--bad)}
+  .fig-body{position:relative; background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px); background-size:32px 32px;}
+  .fig-body svg{display:block; width:100%; height:auto; max-height:360px;}
+  .fig-ctl{display:flex; gap:14px; align-items:center; flex-wrap:wrap; padding:12px 16px; border-top:1px solid var(--line2); background:var(--panel2);}
+  .ctl{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--mute);}
+  .ctl label{white-space:nowrap}
+  .ctl input[type=range]{width:150px; accent-color:var(--ac);}
+  .ctl .ro{font-family:var(--mono); font-size:12.5px; color:var(--ink); min-width:6ch;}
+  .btn{font-family:var(--sans); font-size:13px; font-weight:500; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:var(--raise); color:var(--ink); cursor:pointer;}
+  .btn:hover,.btn:focus{border-color:var(--ac); outline:none}
+  .btn.ac{background:var(--ac); color:#1A1206; border-color:var(--ac);}
+  .btn.ac:hover{filter:brightness(1.06)}
+  .readout{display:flex; gap:18px; flex-wrap:wrap; padding:10px 16px; border-top:1px solid var(--line2); font-family:var(--mono); font-size:12.5px; color:var(--mute);}
+  .readout b{color:var(--ink); font-weight:500}
+  .readout .ac{color:var(--ac)} .readout .bad{color:var(--bad)} .readout .ok{color:var(--ok)}
+  .fig-cap{padding:12px 16px 14px; font-size:13.5px; color:var(--mute); border-top:1px solid var(--line2); max-width:78ch;}
+  .fig-cap b{color:var(--ink); font-weight:500}
+
+  /* svg classes */
+  .s-ink{stroke:var(--ink)} .s-mute{stroke:var(--mute)} .s-faint{stroke:var(--faint)} .s-ac{stroke:var(--ac)} .s-bad{stroke:var(--bad)} .s-spec{stroke:var(--spec)} .s-ok{stroke:var(--ok)}
+  .f-ac{fill:var(--ac-soft)} .f-bad{fill:var(--bad-soft)} .f-spec{fill:var(--spec-soft)} .f-warn{fill:var(--warn-soft)} .f-mute{fill:rgba(148,162,176,.14)}
+  .t{font-family:var(--mono); font-size:11px; fill:var(--faint)} .t.hi{fill:var(--ink)} .t.ac{fill:var(--ac)} .t.spec{fill:var(--spec)} .t.bad{fill:var(--bad)}
+  .dot{fill:var(--ac)} .dot.bad{fill:var(--bad)} .dot.ok{fill:var(--ok)}
+
+  /* ---------- chapters ---------- */
+  .ch{padding-top:34px; scroll-margin-top:16px;}
+  @media(max-width:980px){.ch{scroll-margin-top:96px}}
+  .ch-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;}
+  .ch-num{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--ac);}
+  .ch h2{font-family:var(--disp); font-size:34px; font-weight:400; margin:0; letter-spacing:-.005em; line-height:1.1; text-wrap:balance;}
+  .ch h2 i{color:var(--ac)}
+  .ch .intro{font-size:16px; color:var(--mute); max-width:66ch; margin:12px 0 0;}
+  .ch .intro b{color:var(--ink); font-weight:500}
+  .ch .intro em{font-family:var(--math); font-style:italic; color:var(--ink)}
+
+  /* cards */
+  .cards{display:flex; flex-direction:column; gap:14px; margin-top:18px;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:9px; overflow:hidden;}
+  .cd-head{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; padding:12px 16px; border-bottom:1px solid var(--line2);}
+  .cd-name{font-family:var(--disp); font-size:22px; letter-spacing:.005em;}
+  .badge{font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; padding:2.5px 7px; border-radius:4px; white-space:nowrap;}
+  .b-in{background:var(--ac-soft); color:var(--ac)} .b-out{background:var(--spec-soft); color:var(--spec)}
+  .cd-when{font-size:13.5px; color:var(--mute); flex:1 1 220px}
+  .cd-two{display:grid; grid-template-columns:1fr 1fr;}
+  @media(max-width:760px){.cd-two{grid-template-columns:1fr}}
+  .cd-f{padding:16px; border-right:1px solid var(--line2); min-width:0;}
+  @media(max-width:760px){.cd-f{border-right:none; border-bottom:1px solid var(--line2)}}
+  .cd-c{background:var(--panel2); min-width:0;}
+  .mini{font-family:var(--mono); font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--faint); display:block; margin-bottom:9px;}
+  .cd-c .mini{padding:14px 16px 0; margin:0}
+  pre{margin:0; padding:9px 16px 16px; overflow-x:auto;}
+  code{font-family:var(--mono); font-size:12.5px; line-height:1.72; color:var(--ink);}
+  .cm{color:var(--faint)} .kw{color:var(--ac)}
+  .cd-why{padding:14px 16px; border-top:1px solid var(--line2); font-size:14px; color:var(--mute); line-height:1.66;}
+  .cd-why b{color:var(--ink); font-weight:500}
+  .cd-snag{padding:11px 16px; border-top:1px solid var(--line2); background:var(--ac-soft); font-size:13.5px; color:var(--mute);}
+  .cd-snag b{color:var(--ac); font-weight:600}
+  .cd-see{padding:9px 16px; border-top:1px solid var(--line2); font-family:var(--mono); font-size:11.5px; color:var(--faint); display:flex; gap:10px; flex-wrap:wrap;}
+  .cd-see a{color:var(--ac); text-decoration:none} .cd-see a:hover{text-decoration:underline}
+
+  /* math */
+  .eq{font-family:var(--math); font-size:17.5px; line-height:2.25; overflow-x:auto; white-space:nowrap; padding-bottom:2px;}
+  .v{font-style:italic} .op{padding:0 .3em}
+  .frac{display:inline-flex; flex-direction:column; vertical-align:-.55em; text-align:center; margin:0 .14em;}
+  .frac>span:first-child{border-bottom:1.1px solid currentColor; padding:0 .32em 1px}
+  .frac>span:last-child{padding:1px .32em 0}
+  .sq{display:inline-flex; margin:0 .06em}
+  .sq::before{content:"\221A"; font-size:1.05em; line-height:1}
+  .sq>span{border-top:1.1px solid currentColor; padding:1px .14em 0 .05em; margin-top:.12em}
+  sub,sup{font-size:.66em; font-style:normal}
+  .gl{display:grid; grid-template-columns:auto 1fr; gap:3px 12px; margin-top:12px; font-size:13.5px;}
+  .gl dt{font-family:var(--math); font-style:italic; color:var(--ac); white-space:nowrap} .gl dd{margin:0; color:var(--mute)}
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:8px; background:var(--panel); margin-top:14px;}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; font-variant-numeric:tabular-nums;}
+  th{background:var(--panel2); text-align:left; padding:8px 13px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--line); white-space:nowrap;}
+  td{padding:7px 13px; border-bottom:1px solid var(--line2)} tr:last-child td{border-bottom:none} td.n{font-family:var(--mono); white-space:nowrap}
+
+  .traps{display:flex; flex-direction:column; gap:9px; margin-top:16px}
+  .trap{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--ac); padding:11px 14px; border-radius:0 7px 7px 0; font-size:14px; color:var(--mute);}
+  .trap b{display:block; font-family:var(--mono); font-size:12.5px; color:var(--ink); margin-bottom:2px}
+  .empty{padding:48px 0; text-align:center; color:var(--faint)}
+  footer{border-top:1px solid var(--line); margin-top:44px; padding-top:16px; font-size:13px; color:var(--faint); line-height:1.6}
+  footer .log span{color:var(--ac); font-family:var(--mono); font-size:11.5px}
+
+
+/* =====================================================================
+   2026 CHEATSHEET REDESIGN — optimized for fast statistical lookup
+   ===================================================================== */
+:root,
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F3F6FA;
+  --panel:#FFFFFF;
+  --panel2:#F7F9FC;
+  --raise:#EEF2F7;
+  --line:#DCE3EB;
+  --line2:#E9EEF4;
+  --ink:#10243D;
+  --mute:#586A7D;
+  --faint:#8996A5;
+  --ac:#FFCB05;
+  --ac-soft:rgba(255,203,5,.16);
+  --ac-line:rgba(255,203,5,.58);
+  --ok:#2F7D62;
+  --bad:#C7473E;
+  --bad-soft:rgba(199,71,62,.10);
+  --spec:#2E6EA7;
+  --spec-soft:rgba(46,110,167,.10);
+  --warn-soft:rgba(255,203,5,.18);
+  --grid:rgba(16,36,61,.045);
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1522;
+  --panel:#111F2F;
+  --panel2:#0E1B29;
+  --raise:#17283A;
+  --line:#263A4D;
+  --line2:#1C3042;
+  --ink:#EDF4FA;
+  --mute:#A8B7C5;
+  --faint:#718294;
+  --ac:#FFCB05;
+  --ac-soft:rgba(255,203,5,.13);
+  --ac-line:rgba(255,203,5,.48);
+  --ok:#65CEA1;
+  --bad:#F17B70;
+  --bad-soft:rgba(241,123,112,.12);
+  --spec:#76B8EC;
+  --spec-soft:rgba(118,184,236,.12);
+  --warn-soft:rgba(255,203,5,.15);
+  --grid:rgba(237,244,250,.04);
+}
+body{
+  background:
+    radial-gradient(circle at 85% -10%, rgba(255,203,5,.09), transparent 27rem),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.58;
+}
+.app{grid-template-columns:258px minmax(0,1fr); max-width:1440px; min-height:100vh;}
+.rail{
+  padding:26px 18px 28px 20px;
+  border-right:1px solid var(--line);
+  background:color-mix(in srgb,var(--panel) 92%,transparent);
+  backdrop-filter:blur(14px);
+}
+.brand{font-family:var(--sans); font-size:25px; font-weight:700; letter-spacing:-.035em; color:var(--ink);}
+.brand i{color:var(--ink); font-style:normal; position:relative;}
+.brand i::after{content:""; position:absolute; left:0; right:0; bottom:-1px; height:5px; border-radius:5px; background:var(--ac); z-index:-1;}
+.brand-sub{margin-top:7px; color:var(--mute); font-size:10px; letter-spacing:.13em; font-weight:600;}
+.course-mark{display:flex; align-items:center; gap:8px; margin-top:14px; padding:9px 10px; border:1px solid var(--line); border-radius:9px; background:var(--panel2); font-size:11.5px; color:var(--mute);}
+.course-mark b{color:var(--ink); font-weight:600;}
+.course-dot{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--ac-soft)}
+.search{margin:16px 0 14px;}
+.search input{padding:10px 34px 10px 12px; border-radius:9px; background:var(--panel); border-color:var(--line); box-shadow:0 1px 2px rgba(10,30,50,.03);}
+.search input:focus{outline:3px solid var(--ac-soft); border-color:var(--ac-line);}
+.search .n{top:11px; right:10px;}
+nav ol{gap:3px;}
+nav a{grid-template-columns:27px 1fr; padding:7px 9px; border-radius:8px; color:var(--mute); font-size:13px; line-height:1.3;}
+nav a .k{font-size:9.5px; font-weight:600;}
+nav a:hover,nav a:focus{background:var(--panel2); color:var(--ink);}
+nav a.on{background:var(--ink); color:var(--panel); box-shadow:0 5px 14px rgba(16,36,61,.12);}
+nav a.on .k{color:var(--ac)}
+.rail-actions{display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:15px;}
+.rail-action{border:1px solid var(--line); background:var(--panel); color:var(--mute); border-radius:8px; padding:7px 8px; font:500 11.5px var(--sans); cursor:pointer;}
+.rail-action:hover{color:var(--ink); border-color:var(--faint)}
+.rail-foot{margin-top:18px; font-size:10.5px;}
+main{padding:0 40px 80px 44px; max-width:1180px; width:100%;}
+.hero{padding:42px 0 14px;}
+.hero-topline{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+.eyebrow{font:600 10.5px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--spec);}
+.course-pill{font:600 10.5px var(--mono); letter-spacing:.07em; padding:4px 8px; border-radius:999px; background:var(--ac-soft); color:color-mix(in srgb,var(--ink) 85%,#9A7600); border:1px solid var(--ac-line);}
+.hero h1{font-family:var(--sans); font-size:clamp(38px,5.2vw,64px); font-weight:700; line-height:.99; letter-spacing:-.055em; max-width:900px;}
+.hero h1 i{font-style:normal; color:var(--ink); position:relative; z-index:0;}
+.hero h1 i::after{content:""; position:absolute; left:-.02em; right:-.02em; bottom:.04em; height:.18em; background:var(--ac); border-radius:999px; z-index:-1; opacity:.86;}
+.hero .lede{font-size:17px; line-height:1.55; max-width:72ch; margin:16px 0 0; color:var(--mute);}
+.hero .lede b{font-weight:600; color:var(--ink)}
+.unofficial{margin-top:11px; font-size:10px; letter-spacing:.08em; color:var(--faint);}
+
+.quickbox{margin:26px 0 26px; border:1px solid var(--line); border-radius:14px; background:var(--panel); overflow:hidden; box-shadow:0 10px 30px rgba(16,36,61,.055);}
+.quick-head{display:flex; justify-content:space-between; gap:16px; align-items:flex-end; padding:17px 18px 13px; border-bottom:1px solid var(--line2);}
+.quick-title{font-size:14.5px; font-weight:700; letter-spacing:-.01em;}
+.quick-sub{font-size:12px; color:var(--mute);}
+.quick-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr));}
+.quick-link{display:flex; flex-direction:column; gap:5px; min-height:112px; padding:15px 16px; text-decoration:none; color:inherit; border-right:1px solid var(--line2); border-bottom:1px solid var(--line2); transition:background .15s ease,transform .15s ease;}
+.quick-link:nth-child(4n){border-right:none}.quick-link:nth-last-child(-n+4){border-bottom:none}
+.quick-link:hover{background:var(--panel2); transform:translateY(-1px)}
+.quick-kicker{font:600 9.5px var(--mono); color:var(--faint); letter-spacing:.11em; text-transform:uppercase;}
+.quick-name{font-size:14px; font-weight:700; line-height:1.25; color:var(--ink)}
+.quick-desc{font-size:11.5px; line-height:1.35; color:var(--mute)}
+.quick-arrow{margin-top:auto; font:500 11px var(--mono); color:var(--spec)}
+
+.rules{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:0 0 28px;}
+.rule{display:grid; grid-template-columns:28px 1fr; gap:9px; align-items:start; padding:11px 12px; border:1px solid var(--line); border-radius:10px; background:color-mix(in srgb,var(--panel) 74%,transparent);}
+.rule-n{font:600 9px var(--mono); color:var(--spec); padding-top:2px;}
+.rule b{display:block; font-size:12px; line-height:1.25; color:var(--ink);}
+.rule span:not(.rule-n){display:block; margin-top:3px; font-size:10.5px; line-height:1.35; color:var(--mute);}
+.section-label{display:flex; align-items:center; gap:10px; margin:28px 0 10px; font:600 10px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--faint);}
+.section-label::after{content:""; height:1px; flex:1; background:var(--line)}
+.fig{border-radius:13px; box-shadow:0 8px 24px rgba(16,36,61,.045); margin:14px 0 10px;}
+.fig-top{padding:12px 16px;}
+.fig-title{font-size:10px; color:var(--spec);}
+.fig-ctl{padding:11px 14px; gap:10px;}
+.btn{border-radius:8px; padding:7px 11px; background:var(--panel);}
+.btn.ac{background:var(--ink); color:#fff; border-color:var(--ink);}
+.btn.ac:hover{filter:none; box-shadow:0 0 0 3px var(--ac-soft)}
+
+.ch{padding-top:54px;}
+.ch-head{gap:10px; align-items:center;}
+.ch-num{display:inline-flex; align-items:center; justify-content:center; min-width:31px; height:23px; padding:0 7px; border-radius:6px; background:var(--ink); color:var(--ac); font-size:9.5px; font-weight:600;}
+.ch h2{font-family:var(--sans); font-size:30px; font-weight:700; letter-spacing:-.035em; line-height:1.08;}
+.ch h2 i{font-style:normal; color:var(--spec)}
+.ch .intro{font-size:14.5px; line-height:1.58; max-width:76ch; margin-top:10px;}
+.cards{gap:16px; margin-top:18px;}
+.card{border-radius:12px; box-shadow:0 6px 18px rgba(16,36,61,.035); scroll-margin-top:22px;}
+.cd-head{padding:13px 16px; gap:9px; align-items:center; background:linear-gradient(180deg,var(--panel),color-mix(in srgb,var(--panel) 92%,var(--panel2)));}
+.cd-name{font-family:var(--sans); font-size:18px; font-weight:700; letter-spacing:-.018em;}
+.badge{font-size:8.5px; font-weight:600; border-radius:999px; padding:3px 7px;}
+.b-in{background:var(--ac-soft); color:color-mix(in srgb,var(--ink) 82%,#9A7600); border:1px solid var(--ac-line)}
+.b-out{background:var(--spec-soft); color:var(--spec); border:1px solid color-mix(in srgb,var(--spec) 25%,transparent)}
+.cd-when{display:block; flex-basis:100%; padding-left:0; color:var(--mute); font-size:12.5px; line-height:1.4;}
+.cd-when b{color:var(--ink); font-weight:600;}
+.cd-two{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);}
+.cd-f{padding:17px 17px 18px;}
+.cd-c{background:var(--panel2);}
+.mini{font-size:8.5px; font-weight:600; margin-bottom:10px; color:var(--faint)}
+.cd-c .mini{padding:15px 16px 0;}
+pre{padding:9px 16px 17px;}
+code{font-size:11.7px; line-height:1.7;}
+.eq{font-size:17px; line-height:2.05;}
+.gl{font-size:12.5px; margin-top:12px; gap:4px 12px;}
+.cd-why{padding:12px 16px; background:var(--spec-soft); border-top:1px solid color-mix(in srgb,var(--spec) 13%,var(--line2)); color:var(--mute); font-size:12.8px;}
+.cd-why::before{content:"INTERPRETATION  "; font:600 8.5px var(--mono); letter-spacing:.1em; color:var(--spec);}
+.cd-snag{padding:10px 16px; background:var(--ac-soft); font-size:12.5px;}
+.cd-snag::before{content:"WATCH FOR  "; font:600 8.5px var(--mono); letter-spacing:.1em; color:color-mix(in srgb,var(--ink) 78%,#9A7600);}
+.cd-see{font-size:10.5px; padding:8px 16px; background:var(--panel);}
+.tw{border-radius:10px; box-shadow:0 5px 16px rgba(16,36,61,.025)}
+.trap{border-left:4px solid var(--ac); border-radius:7px; background:var(--panel); box-shadow:0 4px 14px rgba(16,36,61,.025);}
+footer{font-size:11.5px; line-height:1.55; padding-bottom:20px;}
+
+@media(max-width:1060px){.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-link:nth-child(2n){border-right:none}.quick-link:nth-child(4n){border-right:none}.quick-link:nth-last-child(-n+4){border-bottom:1px solid var(--line2)}.quick-link:nth-last-child(-n+2){border-bottom:none}}
+@media(max-width:980px){
+  .app{grid-template-columns:1fr}.rail{padding:12px 16px;background:var(--panel); overflow:hidden;}.brand{font-size:20px}.brand-sub,.course-mark,.rail-actions,.rail-foot{display:none}nav ol{display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; -webkit-overflow-scrolling:touch}nav ol::-webkit-scrollbar{display:none}nav a{display:inline-flex; flex:0 0 auto; grid-template-columns:none; align-items:center; width:auto; max-width:none; white-space:nowrap; padding:7px 10px}nav a .k{display:none}.search{margin:8px 0}.hero{padding-top:28px}main{padding:0 18px 60px}.ch{scroll-margin-top:114px}.card{scroll-margin-top:114px}
+}
+@media(max-width:720px){.rules{grid-template-columns:1fr}.quick-grid{grid-template-columns:1fr}.quick-link{border-right:none!important;border-bottom:1px solid var(--line2)!important;min-height:96px}.quick-link:last-child{border-bottom:none!important}.cd-two{grid-template-columns:1fr}.hero h1{font-size:42px}.quick-head{align-items:flex-start;flex-direction:column;gap:4px}}
+@media print{
+  :root,:root[data-theme="dark"]{color-scheme:light;--bg:#fff;--panel:#fff;--panel2:#fafafa;--raise:#f4f4f4;--line:#d8d8d8;--line2:#e8e8e8;--ink:#111;--mute:#444;--faint:#777;--ac:#d8a800;--spec:#245d92;--grid:transparent}
+  body{background:#fff;font-size:11pt}.app{display:block}.rail,.hero .fig,.rail-actions{display:none!important}main{max-width:none;padding:0}.hero{padding:0 0 12px}.hero h1{font-size:30pt}.quickbox{box-shadow:none;break-inside:avoid}.ch{padding-top:24px;break-before:auto}.card{box-shadow:none;break-inside:avoid}.fig{box-shadow:none;break-inside:avoid}.cd-two{grid-template-columns:1fr 1fr}.cd-why,.cd-snag{background:#fff}.quick-link{min-height:0}.unofficial{display:none}footer{margin-top:24px}}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to content</a>
+<div class="app">
+  <aside class="rail">
+    <div class="brand">DS<i>4</i>MFG</div>
+    <div class="brand-sub">Statistics cheatsheet</div>
+    <div class="course-mark"><span class="course-dot"></span><span><b>Shao course</b><br>fast reference for analysis</span></div>
+    <div class="search"><input id="q" type="search" placeholder="Search test, formula, concept…" aria-label="Search the cheatsheet"><span class="n" id="qn"></span></div>
+    <nav><ol id="nav"></ol></nav>
+    <div class="rail-actions"><button class="rail-action" id="theme-toggle" type="button">Dark mode</button><button class="rail-action" id="print-page" type="button">Print / PDF</button></div>
+    <div class="rail-foot">Use search or jump by task. Core cards match the course; “extra” cards are useful extensions.</div>
+  </aside>
+
+  <main id="content">
+    <section class="hero" id="top">
+      <div class="hero-topline"><span class="eyebrow">DS4MFG · Statistics reference</span><span class="course-pill">Prof. Chenhui Shao</span></div>
+      <h1>Pick the question. <i>Use the right statistic.</i></h1>
+      <p class="lede">A fast, practical cheatsheet for DS4MFG: <b>when to use each method, the formula, the SciPy code, and the interpretation.</b> Search directly, or start from the question you are trying to answer.</p>
+      <div class="unofficial">Course-oriented reference · Fall 2026 · examples use manufacturing quality data</div>
+
+      <div class="quickbox" aria-label="Choose a statistics task">
+        <div class="quick-head"><div><div class="quick-title">What are you trying to do?</div><div class="quick-sub">Jump straight to the tool you need.</div></div><div class="quick-sub">formula → code → interpretation</div></div>
+        <div class="quick-grid">
+          <a class="quick-link" href="#moments"><span class="quick-kicker">Start here</span><span class="quick-name">Describe a dataset</span><span class="quick-desc">Mean, sample variance, spread, quartiles.</span><span class="quick-arrow">Descriptive stats →</span></a>
+          <a class="quick-link" href="#ci-unknown"><span class="quick-kicker">Estimate</span><span class="quick-name">Put an interval on a mean</span><span class="quick-desc">Usually σ unknown → t confidence interval.</span><span class="quick-arrow">Confidence interval →</span></a>
+          <a class="quick-link" href="#ttest1"><span class="quick-kicker">One sample</span><span class="quick-name">Test a claimed mean</span><span class="quick-desc">Is the process mean different from target?</span><span class="quick-arrow">One-sample test →</span></a>
+          <a class="quick-link" href="#pooled-t"><span class="quick-kicker">Two groups</span><span class="quick-name">Compare two means</span><span class="quick-desc">Machines, shifts, suppliers, treatments.</span><span class="quick-arrow">Two-sample t →</span></a>
+          <a class="quick-link" href="#capability"><span class="quick-kicker">Manufacturing</span><span class="quick-name">Check process capability</span><span class="quick-desc">Cp, Cpk, tolerance fit, expected defect rate.</span><span class="quick-arrow">Capability →</span></a>
+          <a class="quick-link" href="#xbarR"><span class="quick-kicker">Over time</span><span class="quick-name">Monitor a process</span><span class="quick-desc">x̄/R charts, control limits, signal vs noise.</span><span class="quick-arrow">SPC →</span></a>
+          <a class="quick-link" href="#power"><span class="quick-kicker">Design</span><span class="quick-name">Think about α, β, power</span><span class="quick-desc">False alarms, misses, sample size, shift size.</span><span class="quick-arrow">Power →</span></a>
+          <a class="quick-link" href="#anova"><span class="quick-kicker">3+ groups</span><span class="quick-name">Compare several means</span><span class="quick-desc">ANOVA and effect size when two groups are not enough.</span><span class="quick-arrow">ANOVA →</span></a>
+        </div>
+      </div>
+
+      <div class="rules" aria-label="Rules worth memorizing">
+        <div class="rule"><span class="rule-n">01</span><div><b>Individual part → σ</b><span>Sample mean → σ/√n. Do not mix them.</span></div></div>
+        <div class="rule"><span class="rule-n">02</span><div><b>σ known → z</b><span>σ unknown → estimate with s and use t.</span></div></div>
+        <div class="rule"><span class="rule-n">03</span><div><b>Control before capability</b><span>Cp/Cpk only mean something for a stable process.</span></div></div>
+      </div>
+
+      <div class="section-label">Visual refresher · control chart intuition</div>
+      <div class="fig" id="hero-fig">
+        <div class="fig-top"><span class="fig-title">x̄ control chart · shaft diameter, subgroups of 4</span><span class="fig-status" id="h-status"><b>in control</b></span></div>
+        <div class="fig-body"><svg id="h-svg" viewBox="0 0 900 270" role="img" aria-label="Live control chart"></svg></div>
+        <div class="fig-ctl">
+          <button class="btn ac" id="h-s1">Shift mean +1σ</button>
+          <button class="btn" id="h-s2">Shift mean +2σ</button>
+          <button class="btn" id="h-reset">Reset process</button>
+          <button class="btn" id="h-play">Pause</button>
+          <button class="btn" id="h-step">Next point</button>
+        </div>
+        <div class="readout"><span>target <b>10.000 mm</b></span><span>σ <b>0.020</b></span><span>n <b>4</b></span><span>σ/√n <b>0.010</b></span><span>limits <b>10.000 ± 0.030</b></span><span id="h-arl"></span></div>
+        <div class="fig-cap">Each dot is the mean of four shafts. The limits sit at ±3 standard errors, so a point outside is a rare event for a stable process — about 3 in 1000. Watch how a <b>1σ shift hides for several points</b> before a signal, while a 2σ shift is caught almost at once. That gap between shift and detection is the whole reason the later chapters exist.</div>
+      </div>
+    </section>
+
+    <div id="chapters"></div>
+
+    <footer>
+      Built as a statistics cheatsheet for DS4MFG, Prof. Chenhui Shao (Fall 2026). Numbers are illustrative and checked by computation; this is a reference, not a graded answer. Examples use a running case — a machined shaft, nominal 10.000 mm, tolerance ±0.050 mm.
+      <div class="log" style="margin-top:8px">Lectures folded in so far: <span>T1</span> Quality concepts · <span>T2</span> Modeling process quality · <span>T3</span> Inferences · <span>T4</span> SPC philosophy</div>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* =====================================================================
+   CONTENT — add a lecture by adding cards to a chapter (or a chapter).
+   card: {id, name, taught, when, eq, gl[[sym,meaning]], code, why, snag, see[]}
+   ===================================================================== */
+var EX = { nom:10.000, tol:0.050, sig:0.020, n:16, xbar:10.012 };  // running example
+
+var CH = [
+{ id:"one", num:"01", title:"Single values vs. <i>sample means</i>", fig:"axiom",
+  intro:"This single question decides which spread belongs in a denominator, and it accounts for more confusion in this subject than everything else combined. A process has a spread <em>σ</em>. An average of <em>n</em> items from it has a smaller spread, <em>σ/√n</em>, because highs and lows cancel. <b>Both are real, and they answer different questions.</b>",
+  cards:[
+  { id:"standardize", name:"Standardizing", taught:true, when:"Turning any normal quantity into a z-score.",
+    eq:'<div class="eq"><span style="color:var(--faint)">one part</span>&nbsp;&nbsp;<span class="v">Z</span><span class="op">=</span><span class="frac"><span><span class="v">X</span> − μ</span><span>σ</span></span></div><div class="eq"><span style="color:var(--faint)">an average</span>&nbsp;&nbsp;<span class="v">Z</span><span class="op">=</span><span class="frac"><span><span class="v">x̄</span> − μ</span><span>σ / <span class="sq"><span><span class="v">n</span></span></span></span></span></div>',
+    gl:[["σ","spread of a single item — a property of the process"],["σ/√n","standard error — spread of an average of n items"],["CLT","x̄ is near-normal even when X is not, once n is moderate"]],
+    code:"se = sigma / np.sqrt(n)          # standard error of the MEAN\n\nstats.norm.cdf(limit, mu, sigma)  # P(one part below limit)\nstats.norm.cdf(limit, mu, se)     # P(sample mean below limit)",
+    why:"For the shaft process, σ = 0.020 mm but the mean of 16 shafts has σ/√n = 0.005 mm. A confidence interval built from the second is narrow; a defect rate built from the first can still be large. <b>A tight interval on the mean and a high scrap rate are not in tension</b> — one describes where the centre is, the other describes how far individual parts wander.",
+    snag:"<b>Using σ/√n in a defect-rate calculation</b> is the classic error. It makes the process look far worse than it is, and the number often looks plausible enough to survive.",
+    see:["capability","ztest"] }
+  ]},
+
+{ id:"describe", num:"02", title:"Descriptive <i>statistics</i>", fig:null,
+  intro:"Where every analysis starts. The only subtlety is the divisor in the variance, and it is not cosmetic — it is the first appearance of <em>degrees of freedom</em>, an idea that runs through every later chapter.",
+  cards:[
+  { id:"moments", name:"Mean and sample variance", taught:true, when:"Always the first step on any dataset.",
+    eq:'<div class="eq"><span class="v">x̄</span><span class="op">=</span><span class="frac"><span>Σ <span class="v">x</span><sub>i</sub></span><span><span class="v">n</span></span></span></div><div class="eq"><span class="v">s</span><sup>2</sup><span class="op">=</span><span class="frac"><span>Σ (<span class="v">x</span><sub>i</sub> − <span class="v">x̄</span>)<sup>2</sup></span><span><span class="v">n</span> − 1</span></span><span class="op">=</span><span class="frac"><span>SS</span><span><span class="v">n</span> − 1</span></span></div>',
+    gl:[["SS","sum of squared deviations — the raw, un-averaged total"],["n − 1","x̄ was estimated from the same data, so one degree of freedom is spent"]],
+    code:"x.mean()\nx.std(ddof=1)               # SAMPLE standard deviation\nx.var(ddof=1)\n((x - x.mean())**2).sum()   # SS",
+    why:"Keep the SS form in mind. <b>SS is additive and variance is not</b> — variance has already been divided by its degrees of freedom, so two variances can't simply be averaged, but two sums of squares can be added. That one fact is why pooling in chapter 05 works the way it does, and why ANOVA in 09 decomposes SS rather than variance.",
+    snag:"<b>np.std defaults to ddof=0</b> (population). pandas defaults to ddof=1 (sample). Always state it.",
+    see:["pooled-t","anova"] },
+  { id:"quart", name:"Quartiles and the outlier fence", taught:true, when:"Turning \"that point looks odd\" into a defensible statement.",
+    eq:'<div class="eq">IQR<span class="op">=</span><span class="v">Q</span><sub>3</sub> − <span class="v">Q</span><sub>1</sub><span class="op">,</span>fence<span class="op">=</span><span class="v">Q</span><sub>3</sub> + 1.5·IQR</div>',
+    gl:[["Q₁, Q₃","25th and 75th percentiles"],["1.5","a convention (Tukey), not a theorem — it is what a box plot draws"]],
+    code:"q1, med, q3 = np.percentile(x, [25, 50, 75])\nfence = q3 + 1.5*(q3 - q1)\nx[x > fence]                # flagged points",
+    why:"A fence gives you a rule you can state before looking, which is what separates a finding from a hunch. When flagged points are <b>consecutive in time</b>, say so — a run of unusual values suggests a temporary change in conditions rather than independent flukes, and a time-series plot will show it where a histogram cannot.",
+    snag:"<b>Quartile conventions differ</b> across numpy, R and Excel. Last-decimal disagreements are normal." }
+  ]},
+
+{ id:"estimate", num:"03", title:"Confidence <i>intervals</i>", fig:"ci",
+  intro:"A confidence interval is a statement about a <b>parameter</b> — the true mean — not about future parts. \"95% confident\" describes the procedure: build intervals this way many times, and about 95% of them will contain the truth. The figure does exactly that.",
+  cards:[
+  { id:"ci-known", name:"Mean, σ known", taught:true, when:"Process σ established from history. Uses z.",
+    eq:'<div class="eq"><span class="v">x̄</span> <span class="op">±</span> <span class="v">z</span><sub>α/2</sub> · <span class="frac"><span>σ</span><span><span class="sq"><span><span class="v">n</span></span></span></span></span></div>',
+    gl:[["z<sub>α/2</sub>","1.960 for 95%, 2.576 for 99%"]],
+    code:"se = sigma/np.sqrt(n)\nstats.norm.interval(0.95, xbar, se)\n\n# by hand\nz = stats.norm.ppf(0.975)\nxbar - z*se, xbar + z*se",
+    why:"Sixteen shafts averaging 10.012 with σ = 0.020 give 10.012 ± 1.96(0.005) = <b>(10.002, 10.022)</b>. The interval excludes the 10.000 target — and that is the same fact as rejecting μ = 10.000 in chapter 04. <b>Interval and test are one statement in two currencies.</b>",
+    see:["ztest","ci-unknown"] },
+  { id:"ci-unknown", name:"Mean, σ unknown", taught:true, when:"The usual real case: estimate σ by s, and pay with a wider distribution.",
+    eq:'<div class="eq"><span class="v">x̄</span> <span class="op">±</span> <span class="v">t</span><sub>α/2, <span class="v">n</span>−1</sub> · <span class="frac"><span><span class="v">s</span></span><span><span class="sq"><span><span class="v">n</span></span></span></span></span></div>',
+    gl:[["t","heavier-tailed than z, to pay for having estimated σ"],["n − 1","degrees of freedom"]],
+    code:"stats.t.interval(0.95, n-1, x.mean(), stats.sem(x))\n# stats.sem(x) is s/sqrt(n)",
+    why:"The penalty for not knowing σ shrinks with n: at df = 15, t₀.₀₂₅ = 2.131 against z = 1.960; by df ≈ 1000 they agree to three decimals. That is why tests on large industrial datasets quietly use 1.96 regardless." },
+  { id:"ci-var", name:"Variance", taught:true, when:"Bounding the process spread itself.",
+    eq:'<div class="eq"><span class="frac"><span>(<span class="v">n</span>−1)<span class="v">s</span><sup>2</sup></span><span>χ<sup>2</sup><sub>α/2, <span class="v">n</span>−1</sub></span></span><span class="op">≤</span>σ<sup>2</sup><span class="op">≤</span><span class="frac"><span>(<span class="v">n</span>−1)<span class="v">s</span><sup>2</sup></span><span>χ<sup>2</sup><sub>1−α/2, <span class="v">n</span>−1</sub></span></span></div>',
+    gl:[["χ²","asymmetric — so the interval is not symmetric about s² either"]],
+    code:"ss = (n-1) * x.var(ddof=1)\nlo = ss / stats.chi2.ppf(0.975, n-1)\nhi = ss / stats.chi2.ppf(0.025, n-1)",
+    why:"The numerator is SS again. Because it sits in a <b>denominator</b>, the quantiles land opposite to intuition: the upper χ² quantile gives the lower bound.",
+    snag:"<b>Taking square roots of the endpoints</b> gives a valid interval for σ, not σ². Say which one you are reporting." }
+  ]},
+
+{ id:"test", num:"04", title:"Hypothesis <i>tests</i>", fig:"pval",
+  intro:"A hypothesis test asks one question: <b>if the claim were true, how surprising would this data be?</b> The p-value is that surprise, measured as a probability. Small p means the claim and the data don't get along. Drag the statistic and watch the tail area — that area <em>is</em> the p-value.",
+  cards:[
+  { id:"ztest", name:"z-test on the mean", taught:true, when:"σ known.",
+    eq:'<div class="eq"><span class="v">Z</span><sub>0</sub><span class="op">=</span><span class="frac"><span><span class="v">x̄</span> − μ<sub>0</sub></span><span>σ / <span class="sq"><span><span class="v">n</span></span></span></span></span><span class="op">,</span>reject if |<span class="v">Z</span><sub>0</sub>| &gt; <span class="v">z</span><sub>α/2</sub></div><div class="eq"><span class="v">p</span><span class="op">=</span>2 [1 − Φ(|<span class="v">Z</span><sub>0</sub>|)]<span style="color:var(--faint);font-size:.78em;margin-left:.6em">two-sided</span></div>',
+    gl:[["μ₀","the value claimed under the null hypothesis"],["Φ","standard normal CDF"],["the 2","\"at least this extreme\" counts both tails"]],
+    code:"Z0 = (xbar - mu0) / (sigma/np.sqrt(n))\np  = 2 * stats.norm.sf(abs(Z0))     # sf = upper tail\n\nstats.norm.ppf(0.975)               # 1.960 cutoff",
+    why:"Shafts: Z₀ = (10.012 − 10.000)/0.005 = 2.40, p = 0.016. The mean is off target — mildly, but more than chance explains at α = 0.05. <b>A p-value is P(data this extreme | H₀), not P(H₀).</b> It is also the smallest α at which you would still reject, which is why reporting it beats reporting only a verdict.",
+    snag:"<b>Printed z-tables stop around 3.5–4.0.</b> Beyond that use software, or report p &lt; 0.0001 — the decision is not in doubt.",
+    see:["ci-known","power"] },
+  { id:"ttest1", name:"t-test on the mean", taught:true, when:"σ unknown — estimate it from the sample.",
+    eq:'<div class="eq"><span class="v">t</span><sub>0</sub><span class="op">=</span><span class="frac"><span><span class="v">x̄</span> − μ<sub>0</sub></span><span><span class="v">s</span> / <span class="sq"><span><span class="v">n</span></span></span></span></span><span class="op">,</span>df<span class="op">=</span><span class="v">n</span> − 1</div>',
+    gl:[["s","sample standard deviation"]],
+    code:"t, p = stats.ttest_1samp(x, mu0)\nstats.ttest_1samp(x, mu0, alternative='greater')   # one-sided",
+    why:"Structurally the z-test with s in place of σ. The only thing that changes is which distribution supplies the cutoff." },
+  { id:"chivar", name:"χ² test on the variance", taught:true, when:"\"Has the process become more variable than it was?\"",
+    eq:'<div class="eq">χ<sup>2</sup><sub>0</sub><span class="op">=</span><span class="frac"><span>(<span class="v">n</span>−1)<span class="v">s</span><sup>2</sup></span><span>σ<sub>0</sub><sup>2</sup></span></span><span class="op">,</span>df<span class="op">=</span><span class="v">n</span> − 1</div>',
+    gl:[["σ₀²","the variance claimed under the null"]],
+    code:"chi0 = (n-1) * x.var(ddof=1) / sigma0**2\np = 2 * min(stats.chi2.cdf(chi0, n-1),\n            stats.chi2.sf(chi0, n-1))",
+    why:"This is the χ² the course teaches. It shares a distribution with the test of independence in chapter 09 but nothing else — <b>same curve, different job</b>, and they get confused because both are called \"the chi-square test.\"",
+    snag:"<b>The 2·min is required</b> for a two-sided p-value because χ² is asymmetric: double whichever tail the statistic actually landed in." }
+  ]},
+
+{ id:"compare", num:"05", title:"Comparing <i>two</i> groups", fig:"diff",
+  intro:"Two machines, two shifts, two suppliers. Every comparison here has one shape: <b>difference ÷ standard error of the difference</b>. The figure shows why that standard error is larger than either group's own — <em>variances add</em> when you subtract independent things.",
+  cards:[
+  { id:"pooled-t", name:"Pooled two-sample t", taught:true, when:"Two groups, σ unknown but assumed equal.",
+    eq:'<div class="eq"><span class="v">t</span><span class="op">=</span><span class="frac"><span><span class="v">x̄</span><sub>1</sub> − <span class="v">x̄</span><sub>2</sub></span><span><span class="v">s</span><sub>p</sub> <span class="sq"><span>1/<span class="v">n</span><sub>1</sub> + 1/<span class="v">n</span><sub>2</sub></span></span></span></span></div><div class="eq"><span class="v">s</span><sub>p</sub><sup>2</sup><span class="op">=</span><span class="frac"><span>SS<sub>1</sub> + SS<sub>2</sub></span><span><span class="v">n</span><sub>1</sub> + <span class="v">n</span><sub>2</sub> − 2</span></span><span class="op">=</span><span class="frac"><span>(<span class="v">n</span><sub>1</sub>−1)<span class="v">s</span><sub>1</sub><sup>2</sup> + (<span class="v">n</span><sub>2</sub>−1)<span class="v">s</span><sub>2</sub><sup>2</sup></span><span><span class="v">n</span><sub>1</sub> + <span class="v">n</span><sub>2</sub> − 2</span></span></div>',
+    gl:[["s<sub>p</sub>","pooled estimate of the spread of ONE item"],["SS<sub>i</sub>","(n<sub>i</sub>−1)s<sub>i</sub>² — group i's raw squared deviations"],["df","n₁ + n₂ − 2, two means estimated"]],
+    code:"t, p = stats.ttest_ind(a, b, equal_var=True)\n\n# by hand\nsp2 = ((n1-1)*a.var(ddof=1) + (n2-1)*b.var(ddof=1)) / (n1+n2-2)\nse  = np.sqrt(sp2 * (1/n1 + 1/n2))\nt   = (a.mean() - b.mean()) / se",
+    why:"Read s<sub>p</sub>² as <b>\"pour every within-group squared deviation into one bucket, divide by the total degrees of freedom.\"</b> It is the ordinary variance formula applied to both groups at once; the (n−1) factors just convert each variance back into a sum of squares. Machine A (n = 40, x̄ = 10.004, s = 0.018) against Machine B (n = 35, x̄ = 10.021, s = 0.022): s<sub>p</sub> = 0.0200, SE = 0.0046, t = −3.68 on 73 df, p ≈ 0.0004. B runs measurably larger.",
+    snag:"<b>s<sub>p</sub> is not the standard error.</b> s<sub>p</sub> = 0.0200 describes one shaft; SE = 0.0046 describes a difference between two averages. The √(1/n₁+1/n₂) factor is what gets you from one to the other.",
+    see:["moments","welch-t","anova"] },
+  { id:"welch-t", name:"Welch two-sample t", taught:false, when:"Same question, but the groups visibly differ in spread.",
+    eq:'<div class="eq"><span class="v">t</span><span class="op">=</span><span class="frac"><span><span class="v">x̄</span><sub>1</sub> − <span class="v">x̄</span><sub>2</sub></span><span><span class="sq"><span><span class="v">s</span><sub>1</sub><sup>2</sup>/<span class="v">n</span><sub>1</sub> + <span class="v">s</span><sub>2</sub><sup>2</sup>/<span class="v">n</span><sub>2</sub></span></span></span></span></div>',
+    gl:[["no s<sub>p</sub>","each group keeps its own variance — nothing is assumed equal"],["df","Welch–Satterthwaite approximation, usually fractional"]],
+    code:"t, p = stats.ttest_ind(a, b, equal_var=False)\n\n# decide first:\nstats.levene(a, b).pvalue          # small -> spreads differ\nb.var(ddof=1) / a.var(ddof=1)      # ratio above ~2 is a flag",
+    why:"Arguably the more natural formula — it is just Var(x̄₁) + Var(x̄₂) with each group's own variance. Pooling is what you get by <b>adding</b> an assumption to buy degrees of freedom. When spreads match, the two agree almost exactly (machines A and B: −3.68 vs −3.63). When they don't, pooling can be badly wrong.",
+    snag:"<b>The error has a direction.</b> If the smaller group has the larger variance, pooling understates SE and inflates t. scipy defaults to pooled; R's t.test defaults to Welch.",
+    see:["pooled-t"] },
+  { id:"prop2", name:"Two-proportion z", taught:false, when:"Comparing rates — defect rates, yields — rather than measurements.",
+    eq:'<div class="eq"><span class="v">p̂</span><span class="op">=</span><span class="frac"><span><span class="v">x</span><sub>1</sub> + <span class="v">x</span><sub>2</sub></span><span><span class="v">n</span><sub>1</sub> + <span class="v">n</span><sub>2</sub></span></span><span class="op">,</span><span class="v">z</span><span class="op">=</span><span class="frac"><span><span class="v">p̂</span><sub>1</sub> − <span class="v">p̂</span><sub>2</sub></span><span><span class="sq"><span><span class="v">p̂</span>(1−<span class="v">p̂</span>)(1/<span class="v">n</span><sub>1</sub> + 1/<span class="v">n</span><sub>2</sub>)</span></span></span></span></div>',
+    gl:[["p̂","pooled proportion — the analogue of s<sub>p</sub>"],["p̂(1−p̂)","the variance, computed from the rate rather than estimated"]],
+    code:"ph = (x1 + x2) / (n1 + n2)\nse = np.sqrt(ph*(1-ph)*(1/n1 + 1/n2))\nz  = (x1/n1 - x2/n2) / se\np  = 2 * stats.norm.sf(abs(z))",
+    why:"The same shape as the pooled t, but <b>what gets pooled is the rate, not a variance</b>. A normal distribution has two free parameters, so σ must be estimated separately — that is s<sub>p</sub>'s whole job. A yes/no outcome has one parameter, and its variance p(1−p) follows from the rate, so there is nothing left to estimate. Machine A with 12 defects in 600 against B with 31 in 640: z = −2.74, p = 0.006.",
+    snag:"<b>z² is the χ² statistic of the same 2×2 table.</b> They are one test wearing two notations.",
+    see:["pooled-t","chi2ind"] },
+  { id:"ftest", name:"Are two spreads different?", taught:false, when:"Deciding whether pooling is legitimate before you pool.",
+    eq:'<div class="eq"><span class="v">F</span><span class="op">=</span><span class="frac"><span><span class="v">s</span><sub>1</sub><sup>2</sup></span><span><span class="v">s</span><sub>2</sub><sup>2</sup></span></span><span class="op">,</span>df<span class="op">=</span>(<span class="v">n</span><sub>1</sub>−1, <span class="v">n</span><sub>2</sub>−1)</div>',
+    gl:[["F","ratio of two variance estimates; ≈ 1 when they agree"]],
+    code:"stats.levene(a, b).pvalue          # robust — prefer this\n\nF = a.var(ddof=1) / b.var(ddof=1)  # textbook F-test\np = 2*min(stats.f.cdf(F, n1-1, n2-1), stats.f.sf(F, n1-1, n2-1))",
+    why:"The F-test is <b>very sensitive to non-normality</b> — it can fire because the data are skewed rather than because the variances differ. Levene's test compares absolute deviations from the group centres instead and is the safer screen.",
+    snag:"<b>Don't turn this into a ritual.</b> Modern practice leans toward Welch by default rather than test-then-choose; the pre-test itself distorts the error rate of what follows." }
+  ]},
+
+{ id:"capability", num:"06", title:"Can the process hold the <i>tolerance</i>?", fig:"cap",
+  intro:"Here statistics becomes manufacturing. A tolerance is a fixed window; the process is a bell curve that may or may not fit inside it. <b>All of this chapter uses σ, never σ/√n</b> — a customer receives individual parts. Move the bell, then squeeze it, and watch what each does to the scrap rate.",
+  cards:[
+  { id:"capability", name:"Cₚ, Cₚₖ and defect rate", taught:true, when:"\"Can this process hold the tolerance?\"",
+    eq:'<div class="eq"><span class="v">C</span><sub>p</sub><span class="op">=</span><span class="frac"><span>USL − LSL</span><span>6σ</span></span><span class="op">,</span><span class="v">C</span><sub>pk</sub><span class="op">=</span>min<span class="frac"><span>USL − μ</span><span>3σ</span></span>,<span class="frac"><span>μ − LSL</span><span>3σ</span></span></div><div class="eq">defect<span class="op">=</span>Φ<span class="frac"><span>LSL − μ</span><span>σ</span></span><span class="op">+</span>1 − Φ<span class="frac"><span>USL − μ</span><span>σ</span></span></div>',
+    gl:[["USL, LSL","upper and lower specification limits"],["C<sub>p</sub>","spread against tolerance, ignoring where the centre sits"],["C<sub>pk</sub>","penalises off-centre; equals C<sub>p</sub> only when centred"]],
+    code:"Cp  = (USL - LSL) / (6*sigma)\nCpk = min((USL - mu)/(3*sigma), (mu - LSL)/(3*sigma))\n\nrate = stats.norm.cdf(LSL, mu, sigma) + stats.norm.sf(USL, mu, sigma)\nppm  = 1e6 * rate",
+    why:"The normal tail falls off like exp(−z²/2) — <b>quadratic in the exponent</b> — so halving σ does not halve scrap, it annihilates it. Shafts as-is: C<sub>pk</sub> = 0.63 and 2.97% scrap. Centre the process: 1.24%. Centre it <b>and</b> halve σ: about one part per million. Centring helps some; reducing variation is what makes a tolerance achievable. That asymmetry is the whole argument behind \"six sigma\" as a target.",
+    snag:"<b>C<sub>pk</sub> goes negative</b> once the centre leaves the spec band. Not an error — it means the process mean itself is out of tolerance.",
+    see:["standardize","xbarR"] }
+  ], table:"cap"},
+
+{ id:"errors", num:"07", title:"Type I, Type II & <i>power</i>", fig:"power",
+  intro:"Every test can fail in two directions: raise an alarm when nothing changed (<em>α</em>), or stay quiet when something did (<em>β</em>). You choose α; β is what you get, and it depends on how big the shift is and how much data you have. On a control chart these are false alarms and missed shifts.",
+  cards:[
+  { id:"power", name:"α, β and power", taught:true, when:"Sizing a test, or explaining why a chart missed a shift.",
+    eq:'<div class="eq">α<span class="op">=</span>P(reject | <span class="v">H</span><sub>0</sub> true)<span class="op">,</span>β<span class="op">=</span>P(fail to reject | <span class="v">H</span><sub>1</sub> true)</div><div class="eq">δ<span class="op">=</span><span class="frac"><span>μ<sub>1</sub> − μ<sub>0</sub></span><span>σ / <span class="sq"><span><span class="v">n</span></span></span></span></span><span class="op">,</span>β<span class="op">=</span>Φ(<span class="v">z</span><sub>α/2</sub> − δ) − Φ(−<span class="v">z</span><sub>α/2</sub> − δ)</div>',
+    gl:[["α","false-alarm rate — you pick it"],["β","miss rate — follows from α, n and the true shift"],["power","1 − β, the chance of catching a real shift"],["δ","the shift measured in standard errors"]],
+    code:"zc = stats.norm.ppf(1 - alpha/2)\nd  = (mu1 - mu0) / (sigma/np.sqrt(n))\nbeta  = stats.norm.cdf(zc - d) - stats.norm.cdf(-zc - d)\npower = 1 - beta",
+    why:"α and β trade against each other at fixed n — widen the limits to cut false alarms and you necessarily miss more real shifts. <b>The only lever that improves both is more data</b>, because n enters δ through √n. That is precisely the subgroup-size decision on a control chart.",
+    see:["xbarR","ztest"] }
+  ]},
+
+{ id:"spc", num:"08", title:"Statistical process <i>control</i>", fig:null,
+  intro:"The chart at the top of the page is this chapter. A control chart is a hypothesis test repeated at every subgroup, with limits at ±3 standard errors so that false alarms stay rare (about 0.27% per point) and real shifts are eventually caught. Build the range chart first: <b>limits on the mean mean nothing while the spread is unstable.</b>",
+  cards:[
+  { id:"xbarR", name:"x̄ and R charts", taught:true, when:"m subgroups of size n from a running process.",
+    eq:'<div class="eq"><span style="color:var(--faint)">x̄ chart</span>&nbsp;&nbsp;CL<span class="op">=</span><span class="v">x̄̄</span><span class="op">,</span>UCL / LCL<span class="op">=</span><span class="v">x̄̄</span> ± <span class="v">A</span><sub>2</sub><span class="v">R̄</span></div><div class="eq"><span style="color:var(--faint)">R chart</span>&nbsp;&nbsp;CL<span class="op">=</span><span class="v">R̄</span><span class="op">,</span>UCL<span class="op">=</span><span class="v">D</span><sub>4</sub><span class="v">R̄</span><span class="op">,</span>LCL<span class="op">=</span><span class="v">D</span><sub>3</sub><span class="v">R̄</span></div><div class="eq">σ̂<span class="op">=</span><span class="frac"><span><span class="v">R̄</span></span><span><span class="v">d</span><sub>2</sub></span></span><span class="op">,</span><span class="v">A</span><sub>2</sub><span class="op">=</span><span class="frac"><span>3</span><span><span class="v">d</span><sub>2</sub> <span class="sq"><span><span class="v">n</span></span></span></span></span></div>',
+    gl:[["x̄̄","grand mean of the subgroup means"],["R̄","average subgroup range"],["d₂","turns an average range into an estimate of σ"],["A₂, D₃, D₄","table constants that repackage 3σ limits"]],
+    code:"xbb  = sub.mean(axis=1).mean()\nRbar = (sub.max(axis=1) - sub.min(axis=1)).mean()\n\nA2, D3, D4 = 0.577, 0, 2.114          # n = 5\nx_UCL, x_LCL = xbb + A2*Rbar, xbb - A2*Rbar\nR_UCL, R_LCL = D4*Rbar, D3*Rbar\nsigma_hat = Rbar / 2.326               # d2, n = 5",
+    why:"The constants are not magic: <b>A₂ = 3/(d₂√n)</b> is 3σ/√n rewritten to use the range instead of s, which was far easier on a shop floor before computers. Everything here is chapter 07 in disguise — 3σ limits fix α, and subgroup size sets β for a given shift. In the hero chart a 1σ shift takes about six points to catch on average; a 2σ shift is caught in about one.",
+    snag:"<b>D₃ = 0 for n ≤ 6</b> because the computed lower limit would be negative and a range cannot be. It is a floor, not an omission. Capability indices (06) are only meaningful once these charts show control — an unstable process has no single σ to put in a denominator." }
+  ], table:"spc"},
+
+{ id:"beyond", num:"09", title:"Useful <i>extensions</i>", fig:null,
+  intro:"Useful methods that extend the course ideas. Keep them nearby when the practical question is larger than the lecture example.",
+  cards:[
+  { id:"chi2ind", name:"χ² test of independence", taught:false, when:"Does a yes/no outcome depend on a category? (defect × machine)",
+    eq:'<div class="eq"><span class="v">E</span><sub>ij</sub><span class="op">=</span><span class="frac"><span>row total × column total</span><span><span class="v">N</span></span></span><span class="op">,</span>χ<sup>2</sup><span class="op">=</span>Σ<span class="frac"><span>(<span class="v">O</span> − <span class="v">E</span>)<sup>2</sup></span><span><span class="v">E</span></span></span></div>',
+    gl:[["O","observed count in a cell"],["E","count expected if the factors were independent"],["df","(rows − 1)(columns − 1)"]],
+    code:"ct = pd.crosstab(df.Machine, df.Defective)\nchi2, p, dof, expected = stats.chi2_contingency(ct)\n(ct - expected)**2 / expected        # which cells drive it",
+    why:"Each term is a <b>squared z-score</b>: for a count with mean E the variance is also about E, so (O−E)/√E is already standardized — the same reason the two-proportion z needs no s<sub>p</sub>. Always print the per-cell contributions; they turn a verdict into a diagnosis by showing <em>which</em> machine is out of line.",
+    snag:"<b>Every expected count should be ≥ 5.</b> Below that the χ² approximation is unreliable.",
+    see:["prop2","chivar"] },
+  { id:"anova", name:"One-way ANOVA", taught:false, when:"Comparing means across three or more groups at once.",
+    eq:'<div class="eq">SSB<span class="op">=</span>Σ <span class="v">n</span><sub>i</sub>(<span class="v">x̄</span><sub>i</sub> − <span class="v">x̄̄</span>)<sup>2</sup><span class="op">,</span>SSW<span class="op">=</span>ΣΣ(<span class="v">x</span> − <span class="v">x̄</span><sub>i</sub>)<sup>2</sup></div><div class="eq"><span class="v">F</span><span class="op">=</span><span class="frac"><span>SSB / (<span class="v">k</span>−1)</span><span>SSW / (<span class="v">N</span>−<span class="v">k</span>)</span></span><span class="op">,</span>η<sup>2</sup><span class="op">=</span><span class="frac"><span>SSB</span><span>SST</span></span></div>',
+    gl:[["SSB","variation between group means"],["SSW","variation within groups — the pooled SS of chapter 05, extended"],["η²","effect size: the share of variation the factor explains"]],
+    code:"groups = [g[col].values for _, g in df.groupby('Machine')]\nF, p = stats.f_oneway(*groups)\n\nSSB  = sum(len(g)*(g.mean()-df[col].mean())**2 for g in groups)\neta2 = SSB / ((df[col]-df[col].mean())**2).sum()",
+    why:"F is a ratio of <b>two competing estimates of σ²</b>: if all group means were equal, the spread among them would be pure sampling noise and F would sit near 1. With two groups, F = t² exactly — ANOVA is the pooled t-test generalised, with SSW in the role s<sub>p</sub>² played.",
+    snag:"<b>Report η² alongside F.</b> With thousands of observations every p-value rounds to zero and carries no information; the effect size still does.",
+    see:["pooled-t","moments"] }
+  ]}
+];
+
+var TRAPS = [
+ ["ddof=1","numpy's std/var default to the population divisor; pandas' default to the sample divisor. State it every time."],
+ ["stats.norm.sf(z) over 1 - cdf(z)","In the far tail the subtraction loses precision and eventually returns 0. sf computes the tail directly."],
+ ["ttest_ind defaults to equal_var=True","scipy pools by default; R's t.test uses Welch by default. Same data, different answer, depending on language."],
+ ["A CI is not a prediction interval","x̄ ± z·σ/√n locates the mean. The interval holding 95% of parts is μ ± z·σ — wider by √n."],
+ ["Huge n makes everything significant","A trivial difference clears any α given enough data. Report an effect size, or the raw difference in real units."],
+ ["Capability needs a stable process","C_p and C_pk assume one σ exists. Compute them only after the control charts show the process in control."]
+];
+
+var TABLES = {
+ cap:{head:["Tolerance in σ","C_p (centred)","Defect rate","ppm"], rows:[
+   ["±1σ","0.333","0.3173","317,311"],["±2σ","0.667","4.55e−2","45,500"],["±3σ","1.000","2.70e−3","2,700"],
+   ["±4σ","1.333","6.33e−5","63"],["±5σ","1.667","5.73e−7","0.57"],["±6σ","2.000","1.97e−9","0.002"]]},
+ spc:{head:["n","d₂","A₂","D₃","D₄"], rows:[
+   ["2","1.128","1.880","0","3.267"],["3","1.693","1.023","0","2.574"],["4","2.059","0.729","0","2.282"],
+   ["5","2.326","0.577","0","2.114"],["6","2.534","0.483","0","2.004"]]}
+};
+
+/* =====================================================================
+   NUMERICS
+   ===================================================================== */
+var SQ2PI = Math.sqrt(2*Math.PI);
+function pdf(z){ return Math.exp(-z*z/2)/SQ2PI; }
+function Phi(z){                                   // Zelen & Severo, |err| < 7.5e-8
+  var t = 1/(1+0.2316419*Math.abs(z)), d = pdf(z);
+  var p = d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+  return z >= 0 ? 1-p : p;
+}
+var Z975 = 1.959964;
+var _sp = null;
+function randn(){                                  // Box–Muller
+  if(_sp !== null){ var s=_sp; _sp=null; return s; }
+  var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+  var r=Math.sqrt(-2*Math.log(u)), th=2*Math.PI*v;
+  _sp = r*Math.sin(th); return r*Math.cos(th);
+}
+function fmt(x,d){ return Number(x).toFixed(d); }
+function ppm(r){ return r*1e6 >= 100 ? Math.round(r*1e6).toLocaleString() : (r*1e6).toPrecision(2); }
+
+/* =====================================================================
+   SVG PLOTTING
+   ===================================================================== */
+var NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  var e = document.createElementNS(NS, tag);
+  for(var k in attrs){ if(k === "_t") e.textContent = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+
+/* plotNormal: curves [{mu,s,cls,label}], shades [{mu,s,a,b,cls}], vlines [{x,cls,dash,label,top}] */
+function plotNormal(svg, o){
+  clear(svg);
+  var W=640, H=250, L=28, R=18, T=22, B=34;
+  var pw=W-L-R, ph=H-T-B, x0=o.x0, x1=o.x1;
+  var ymax = 0; o.curves.forEach(function(c){ ymax = Math.max(ymax, 1/(c.s*SQ2PI)); }); ymax *= 1.1;
+  function X(x){ return L + (x-x0)/(x1-x0)*pw; }
+  function Y(y){ return T + ph - (y/ymax)*ph; }
+  function dens(x,c){ return pdf((x-c.mu)/c.s)/c.s; }
+  var N=160;
+  (o.shades||[]).forEach(function(s){
+    var a=Math.max(s.a,x0), b=Math.min(s.b,x1); if(b<=a) return;
+    var d="M"+X(a).toFixed(1)+","+Y(0).toFixed(1);
+    for(var i=0;i<=N;i++){ var x=a+(b-a)*i/N; d+="L"+X(x).toFixed(1)+","+Y(dens(x,s)).toFixed(1); }
+    d+="L"+X(b).toFixed(1)+","+Y(0).toFixed(1)+"Z";
+    el("path",{d:d,"class":s.cls},svg);
+  });
+  el("line",{x1:L,x2:W-R,y1:Y(0),y2:Y(0),"class":"s-faint","stroke-width":1},svg);
+  (o.ticks||[]).forEach(function(t){
+    el("line",{x1:X(t),x2:X(t),y1:Y(0),y2:Y(0)+4,"class":"s-faint"},svg);
+    el("text",{x:X(t),y:Y(0)+16,"text-anchor":"middle","class":"t",_t:(o.tickFmt||String)(t)},svg);
+  });
+  o.curves.forEach(function(c){
+    var d=""; for(var i=0;i<=N;i++){ var x=x0+(x1-x0)*i/N; d+=(i?"L":"M")+X(x).toFixed(1)+","+Y(dens(x,c)).toFixed(1); }
+    el("path",{d:d,fill:"none","class":c.cls,"stroke-width":c.w||2},svg);
+    if(c.label){ var lx=Math.min(Math.max(X(c.mu),L+30),W-R-30); el("text",{x:lx,y:Y(1/(c.s*SQ2PI))-7,"text-anchor":"middle","class":"t "+(c.lcls||"hi"),_t:c.label},svg); }
+  });
+  (o.vlines||[]).forEach(function(v){
+    if(v.x<x0||v.x>x1) return;
+    el("line",{x1:X(v.x),x2:X(v.x),y1:T,y2:Y(0),"class":v.cls,"stroke-width":1.2,"stroke-dasharray":v.dash?"4 3":"none"},svg);
+    if(v.label) el("text",{x:X(v.x)+4,y:T+11,"class":"t "+(v.lcls||""),_t:v.label},svg);
+  });
+  (o.notes||[]).forEach(function(n){ el("text",{x:n.x,y:n.y,"class":"t "+(n.cls||""),"text-anchor":n.anchor||"start",_t:n.text},svg); });
+}
+
+/* controls helper */
+function slider(host, id, label, min, max, step, val, unit){
+  var w=document.createElement("div"); w.className="ctl";
+  w.innerHTML='<label for="'+id+'">'+label+'</label><input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'"><span class="ro" id="'+id+'-ro"></span>';
+  host.appendChild(w); return w.querySelector("input");
+}
+function figShell(mount, title){
+  var f=document.createElement("div"); f.className="fig";
+  f.innerHTML='<div class="fig-top"><span class="fig-title">'+title+'</span></div><div class="fig-body"><svg viewBox="0 0 640 250" role="img"></svg></div><div class="fig-ctl"></div><div class="readout"></div><div class="fig-cap"></div>';
+  mount.appendChild(f);
+  return {svg:f.querySelector("svg"), ctl:f.querySelector(".fig-ctl"), ro:f.querySelector(".readout"), cap:f.querySelector(".fig-cap")};
+}
+
+/* =====================================================================
+   FIGURES
+   ===================================================================== */
+var FIGS = {
+  axiom: function(mount){
+    var f=figShell(mount,"one part vs an average of n · shaft diameter, σ = 0.020");
+    var sN=slider(f.ctl,"ax-n","n",1,50,1,4);
+    function up(){
+      var n=+sN.value, se=EX.sig/Math.sqrt(n);
+      document.getElementById("ax-n-ro").textContent=n;
+      plotNormal(f.svg,{x0:9.93,x1:10.07,ticks:[9.95,10.00,10.05],tickFmt:function(v){return v.toFixed(2);},
+        curves:[{mu:10,s:EX.sig,cls:"s-mute",label:"one part  σ = 0.020",lcls:""},{mu:10,s:se,cls:"s-ac",label:"mean of "+n+"  σ/√n = "+fmt(se,4),lcls:"ac"}],
+        shades:[{mu:10,s:se,a:9.9,b:10.1,cls:"f-ac"}]});
+      f.ro.innerHTML='<span>σ <b>0.0200</b></span><span>σ/√n <b class="ac">'+fmt(se,4)+'</b></span><span>ratio <b>'+fmt(Math.sqrt(n),2)+'× tighter</b></span>';
+    }
+    f.cap.innerHTML="Same process, same σ. The grey bell is where <b>one shaft</b> lands; the amber bell is where the <b>average of n shafts</b> lands. Averaging cancels highs against lows, so the amber bell narrows by √n. Anything about a single part uses the grey curve; anything about a sample mean uses the amber one.";
+    sN.addEventListener("input",up); up();
+  },
+
+  ci: function(mount){
+    var f=figShell(mount,"fifty 95% intervals for the mean · n = 10, σ known");
+    var b=document.createElement("button"); b.className="btn ac"; b.textContent="Draw 50 new samples"; f.ctl.appendChild(b);
+    function up(){
+      clear(f.svg); var W=640,H=250,L=28,T=14,B=30,pw=W-L-18,ph=H-T-B, mu=10, se=EX.sig/Math.sqrt(10), miss=0;
+      var x0=mu-4*se,x1=mu+4*se; function X(x){return L+(x-x0)/(x1-x0)*pw;}
+      el("line",{x1:X(mu),x2:X(mu),y1:T,y2:T+ph,"class":"s-spec","stroke-dasharray":"4 3"},f.svg);
+      el("text",{x:X(mu)+5,y:T+10,"class":"t spec",_t:"true μ = 10.000"},f.svg);
+      for(var i=0;i<50;i++){
+        var m=0; for(var j=0;j<10;j++) m+=mu+EX.sig*randn(); m/=10;
+        var lo=m-Z975*se, hi=m+Z975*se, ok=lo<=mu&&mu<=hi, y=T+6+i*(ph-8)/49;
+        if(!ok) miss++;
+        el("line",{x1:X(lo),x2:X(hi),y1:y,y2:y,"class":ok?"s-mute":"s-bad","stroke-width":ok?1.3:2.2},f.svg);
+        el("circle",{cx:X(m),cy:y,r:1.8,"class":"dot"+(ok?"":" bad")},f.svg);
+      }
+      f.ro.innerHTML='<span>captured <b class="ok">'+(50-miss)+'</b></span><span>missed <b class="bad">'+miss+'</b></span><span>expected misses <b>2.5</b></span>';
+    }
+    f.cap.innerHTML="Each bar is x̄ ± 1.96·σ/√n from a fresh sample of ten shafts. The truth never moves; the <b>intervals</b> do. \"95% confidence\" is a promise about the procedure — roughly one bar in twenty misses — not a probability about any single interval you happen to hold.";
+    b.addEventListener("click",up); up();
+  },
+
+  pval: function(mount){
+    var f=figShell(mount,"the p-value is the tail area · standard normal");
+    var sZ=slider(f.ctl,"pv-z","Z₀",0,4,0.05,2.4);
+    var tog=document.createElement("label"); tog.className="ctl"; tog.innerHTML='<input type="checkbox" id="pv-two" checked> two-sided'; f.ctl.appendChild(tog);
+    var cb=tog.querySelector("input");
+    function up(){
+      var z=+sZ.value, two=cb.checked, p=two?2*(1-Phi(z)):1-Phi(z);
+      document.getElementById("pv-z-ro").textContent=fmt(z,2);
+      var sh=[{mu:0,s:1,a:z,b:4.2,cls:"f-bad"}]; if(two) sh.push({mu:0,s:1,a:-4.2,b:-z,cls:"f-bad"});
+      var vl=[{x:z,cls:"s-bad",label:"Z₀ = "+fmt(z,2),lcls:"bad"},{x:Z975,cls:"s-ac",dash:true,label:"1.96",lcls:"ac"}];
+      if(two){ vl.push({x:-z,cls:"s-bad"}); vl.push({x:-Z975,cls:"s-ac",dash:true}); }
+      plotNormal(f.svg,{x0:-4.2,x1:4.2,ticks:[-3,-2,-1,0,1,2,3],curves:[{mu:0,s:1,cls:"s-ink"}],shades:sh,vlines:vl});
+      f.ro.innerHTML='<span>p <b class="'+(p<0.05?"bad":"ok")+'">'+(p<1e-4?p.toExponential(2):fmt(p,4))+'</b></span><span>α <b>0.05</b></span><span>verdict <b>'+(p<0.05?"reject H₀":"fail to reject")+'</b></span>';
+    }
+    f.cap.innerHTML="The red area is the probability of a statistic <b>at least this far out</b> if H₀ were true — that area <i>is</i> p. Two-sided doubles it because a result equally far in the other direction would be equally damning. The dashed amber lines are ±1.96: whenever Z₀ crosses them, p crosses 0.05. Same decision, two currencies.";
+    sZ.addEventListener("input",up); cb.addEventListener("change",up); up();
+  },
+
+  diff: function(mount){
+    var f=figShell(mount,"why the difference of two means is noisier than either");
+    var sB=slider(f.ctl,"df-s","spread of B",0.5,2,0.05,1);
+    function up(){
+      var sb=+sB.value, sd=Math.sqrt(1+sb*sb);
+      document.getElementById("df-s-ro").textContent=fmt(sb,2);
+      plotNormal(f.svg,{x0:-5,x1:7,ticks:[-4,-2,0,2,4,6],
+        curves:[{mu:0,s:1,cls:"s-mute",label:"x̄₁ (spread 1)",lcls:""},{mu:1.5,s:sb,cls:"s-spec",label:"x̄₂ (spread "+fmt(sb,2)+")",lcls:"spec"},{mu:1.5,s:sd,cls:"s-ac",w:2.4,label:"x̄₂ − x̄₁  (spread "+fmt(sd,2)+")",lcls:"ac"}],
+        shades:[{mu:1.5,s:sd,a:-6,b:8,cls:"f-ac"}]});
+      f.ro.innerHTML='<span>Var(x̄₂ − x̄₁) <b>= 1² + '+fmt(sb,2)+'² = '+fmt(1+sb*sb,2)+'</b></span><span>SD <b class="ac">'+fmt(sd,2)+'</b></span>';
+    }
+    f.cap.innerHTML="Subtracting two uncertain quantities does not cancel their uncertainty — <b>variances add</b>. The amber curve is always wider than either group's own, which is exactly why every two-sample standard error carries a √(1/n₁ + 1/n₂), and why a small noisy group can dominate a comparison against a large clean one.";
+    sB.addEventListener("input",up); up();
+  },
+
+  cap: function(mount){
+    var f=figShell(mount,"process vs tolerance · LSL 9.950, USL 10.050");
+    var sM=slider(f.ctl,"cp-mu","μ",9.96,10.04,0.001,EX.xbar), sS=slider(f.ctl,"cp-s","σ",0.005,0.04,0.001,EX.sig);
+    var LSL=9.95,USL=10.05;
+    function up(){
+      var mu=+sM.value,s=+sS.value;
+      document.getElementById("cp-mu-ro").textContent=fmt(mu,3); document.getElementById("cp-s-ro").textContent=fmt(s,3);
+      var lo=Phi((LSL-mu)/s), hi=1-Phi((USL-mu)/s), r=lo+hi;
+      var Cp=(USL-LSL)/(6*s), Cpk=Math.min((USL-mu)/(3*s),(mu-LSL)/(3*s));
+      plotNormal(f.svg,{x0:9.90,x1:10.10,ticks:[9.95,10.00,10.05],tickFmt:function(v){return v.toFixed(3);},
+        curves:[{mu:mu,s:s,cls:"s-ink"}],
+        shades:[{mu:mu,s:s,a:9.8,b:LSL,cls:"f-bad"},{mu:mu,s:s,a:USL,b:10.2,cls:"f-bad"},{mu:mu,s:s,a:LSL,b:USL,cls:"f-spec"}],
+        vlines:[{x:LSL,cls:"s-spec",dash:true,label:"LSL",lcls:"spec"},{x:USL,cls:"s-spec",dash:true,label:"USL",lcls:"spec"},{x:10,cls:"s-faint",dash:true}]});
+      f.ro.innerHTML='<span>C<sub>p</sub> <b>'+fmt(Cp,2)+'</b></span><span>C<sub>pk</sub> <b class="'+(Cpk>=1.33?"ok":"bad")+'">'+fmt(Cpk,2)+'</b></span><span>scrap <b class="bad">'+(r<1e-3?(r*100).toExponential(1):fmt(r*100,2))+'%</b></span><span><b>'+ppm(r)+' ppm</b></span><span>tolerance = ±<b>'+fmt(0.05/s,1)+'σ</b></span>';
+    }
+    f.cap.innerHTML="Red is scrap. First drag μ to 10.000 — centring helps, but not much while the bell is wide. Then drag σ down and watch the scrap rate collapse: the tail shrinks like exp(−z²/2), so each step of variation reduction buys far more than the last. <b>C<sub>pk</sub> ≥ 1.33 is the usual bar for \"capable.\"</b>";
+    sM.addEventListener("input",up); sS.addEventListener("input",up); up();
+  },
+
+  power: function(mount){
+    var f=figShell(mount,"α, β and the size of the shift · axis in standard errors");
+    var sD=slider(f.ctl,"pw-d","shift (in σ)",0,2,0.05,0.5), sN=slider(f.ctl,"pw-n","n",1,25,1,4);
+    function up(){
+      var sh=+sD.value, n=+sN.value, d=sh*Math.sqrt(n);
+      document.getElementById("pw-d-ro").textContent=fmt(sh,2)+"σ"; document.getElementById("pw-n-ro").textContent=n;
+      var beta=Phi(Z975-d)-Phi(-Z975-d);
+      plotNormal(f.svg,{x0:-4,x1:9,ticks:[-2,0,2,4,6,8],
+        curves:[{mu:0,s:1,cls:"s-mute",label:"H₀",lcls:""},{mu:d,s:1,cls:"s-ac",label:"H₁  δ = "+fmt(d,2),lcls:"ac"}],
+        shades:[{mu:0,s:1,a:Z975,b:9,cls:"f-bad"},{mu:0,s:1,a:-4,b:-Z975,cls:"f-bad"},{mu:d,s:1,a:-Z975,b:Z975,cls:"f-warn"}],
+        vlines:[{x:Z975,cls:"s-ink",dash:true,label:"+1.96"},{x:-Z975,cls:"s-ink",dash:true}]});
+      f.ro.innerHTML='<span>δ = shift·√n <b>'+fmt(d,2)+'</b></span><span>α <b class="bad">0.05</b></span><span>β <b class="ac">'+fmt(beta,3)+'</b></span><span>power <b class="ok">'+fmt(1-beta,3)+'</b></span>';
+    }
+    f.cap.innerHTML="Grey bell: the world where nothing changed. Amber bell: the world where the mean shifted. The cutoffs at ±1.96 are fixed by α. <b>Red is α</b> — grey-world outcomes that trigger a false alarm. <b>Amber is β</b> — shifted-world outcomes that stay inside the cutoffs and go unnoticed. Increase n and the amber bell slides right without moving the cutoffs: that is the only lever that shrinks β at fixed α.";
+    sD.addEventListener("input",up); sN.addEventListener("input",up); up();
+  }
+};
+
+/* ---------- hero: live x-bar chart ---------- */
+(function hero(){
+  var svg=document.getElementById("h-svg"), st=document.getElementById("h-status"), arl=document.getElementById("h-arl");
+  var mu0=10, sig=0.02, n=4, se=sig/Math.sqrt(n), UCL=mu0+3*se, LCL=mu0-3*se;
+  var pts=[], shift=0, shiftAt=-1, detectedAt=-1, MAX=48, timer=null;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function draw(){
+    clear(svg); var W=900,H=270,L=56,R=16,T=18,B=30,pw=W-L-R,ph=H-T-B, y0=9.945,y1=10.055;
+    function Y(v){return T+ph-(v-y0)/(y1-y0)*ph;} function X(i){return L+i*(pw/(MAX-1));}
+    [[UCL,"UCL","s-bad","bad"],[mu0,"CL","s-ok","ok"],[LCL,"LCL","s-bad","bad"]].forEach(function(l){
+      el("line",{x1:L,x2:W-R,y1:Y(l[0]),y2:Y(l[0]),"class":l[2],"stroke-dasharray":l[1]==="CL"?"none":"5 4","stroke-width":1.2},svg);
+      el("text",{x:L-6,y:Y(l[0])+4,"text-anchor":"end","class":"t "+l[3],_t:l[1]+" "+l[0].toFixed(3)},svg);
+    });
+    if(shiftAt>=0 && shiftAt<pts.length){ var xs=X(shiftAt)-pw/(MAX-1)/2; el("line",{x1:xs,x2:xs,y1:T,y2:T+ph,"class":"s-ac","stroke-dasharray":"2 3"},svg); el("text",{x:xs+4,y:T+10,"class":"t ac",_t:"shift applied"},svg); }
+    var d=""; pts.forEach(function(p,i){ d+=(i?"L":"M")+X(i).toFixed(1)+","+Y(p).toFixed(1); });
+    if(pts.length>1) el("path",{d:d,fill:"none","class":"s-mute","stroke-width":1.2},svg);
+    pts.forEach(function(p,i){ var out=p>UCL||p<LCL; el("circle",{cx:X(i),cy:Y(p),r:out?5:3.4,"class":"dot"+(out?" bad":"")},svg); });
+    el("text",{x:W-R,y:H-8,"text-anchor":"end","class":"t",_t:"subgroup →"},svg);
+  }
+  function step(){
+    var v=mu0+shift*sig+se*randn();
+    pts.push(v); if(pts.length>MAX){ pts.shift(); if(shiftAt>=0) shiftAt--; if(detectedAt>=0) detectedAt--; }
+    var i=pts.length-1;
+    if(shift>0 && shiftAt>=0 && detectedAt<0 && (v>UCL||v<LCL)){ detectedAt=i; }
+    if(shift===0 && (v>UCL||v<LCL)) st.innerHTML='<b class="bad">false alarm</b> — a stable process still trips ~3 in 1000';
+    else if(shift===0) st.innerHTML='<b>in control</b>';
+    else if(detectedAt<0) st.innerHTML='<b class="bad">mean shifted +'+shift+'σ</b> — not yet detected ('+(i-shiftAt+1)+' points)';
+    else st.innerHTML='<b class="bad">shift detected</b> after '+(detectedAt-shiftAt+1)+' point'+((detectedAt-shiftAt+1)===1?'':'s');
+    draw();
+  }
+  function setShift(k){ shift=k; shiftAt=pts.length; detectedAt=-1; var dlt=k*Math.sqrt(n), b=Phi(3-dlt)-Phi(-3-dlt); arl.innerHTML='expected points to detect <b>'+fmt(1/(1-b),1)+'</b>'; }
+  function reset(){ pts=[]; shift=0; shiftAt=-1; detectedAt=-1; arl.textContent=""; for(var i=0;i<20;i++) step(); }
+  function play(){ if(timer) return; timer=setInterval(step,650); document.getElementById("h-play").textContent="Pause"; }
+  function pause(){ clearInterval(timer); timer=null; document.getElementById("h-play").textContent="Play"; }
+  document.getElementById("h-s1").addEventListener("click",function(){ setShift(1); step(); });
+  document.getElementById("h-s2").addEventListener("click",function(){ setShift(2); step(); });
+  document.getElementById("h-reset").addEventListener("click",function(){ reset(); });
+  document.getElementById("h-step").addEventListener("click",step);
+  document.getElementById("h-play").addEventListener("click",function(){ timer?pause():play(); });
+  reset(); if(!reduced) play(); else document.getElementById("h-play").textContent="Play";
+  document.addEventListener("visibilitychange",function(){ if(document.hidden) pause(); else if(!reduced) play(); });
+})();
+
+/* =====================================================================
+   RENDER
+   ===================================================================== */
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function hi(src){ return esc(src).replace(/(#[^\n]*)/g,'<span class="cm">$1</span>').replace(/\b(import|from|as|for|in|if|else|return|True|False|None|min|max|abs|sum|len|lambda)\b/g,'<span class="kw">$1</span>'); }
+function tableHTML(t){ var h='<div class="tw"><table><tr>'+t.head.map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr>'; t.rows.forEach(function(r){ h+='<tr>'+r.map(function(c){return '<td class="n">'+c+'</td>';}).join('')+'</tr>'; }); return h+'</table></div>'; }
+function cardHTML(c){
+  var h='<article class="card" id="'+c.id+'" data-taught="'+(c.taught?'in':'out')+'"><div class="cd-head"><span class="cd-name">'+c.name+'</span><span class="badge '+(c.taught?'b-in">CORE':'b-out">EXTRA')+'</span><span class="cd-when"><b>Use when:</b> '+c.when+'</span></div>';
+  h+='<div class="cd-two"><div class="cd-f"><span class="mini">Formula</span>'+c.eq;
+  if(c.gl){ h+='<dl class="gl">'; c.gl.forEach(function(g){ h+='<dt>'+g[0]+'</dt><dd>'+g[1]+'</dd>'; }); h+='</dl>'; }
+  h+='</div><div class="cd-c"><span class="mini">Python · SciPy</span><pre><code>'+hi(c.code)+'</code></pre></div></div>';
+  if(c.why) h+='<div class="cd-why">'+c.why+'</div>';
+  if(c.snag) h+='<div class="cd-snag">'+c.snag+'</div>';
+  if(c.see) h+='<div class="cd-see"><span>related</span>'+c.see.map(function(s){return '<a href="#'+s+'">'+s+'</a>';}).join('')+'</div>';
+  return h+'</article>';
+}
+function render(){
+  var out='', nav='<li><a href="#top"><span class="k">⌂</span>Quick chooser</a></li>';
+  CH.forEach(function(ch){
+    nav+='<li><a href="#'+ch.id+'" data-for="'+ch.id+'"><span class="k">'+ch.num+'</span>'+ch.title.replace(/<[^>]+>/g,'')+'</a></li>';
+    out+='<section class="ch" id="'+ch.id+'" data-ch="1"><div class="ch-head"><span class="ch-num">'+ch.num+'</span><h2>'+ch.title+'</h2></div><p class="intro">'+ch.intro+'</p>';
+    if(ch.fig) out+='<div class="figmount" data-fig="'+ch.fig+'"></div>';
+    out+='<div class="cards">'+ch.cards.map(cardHTML).join('')+'</div>';
+    if(ch.table) out+='<div class="tbl">'+tableHTML(TABLES[ch.table])+'</div>';
+    out+='</section>';
+  });
+  nav+='<li><a href="#traps" data-for="traps"><span class="k">10</span>Common mistakes</a></li>';
+  out+='<section class="ch" id="traps" data-ch="1"><div class="ch-head"><span class="ch-num">10</span><h2>Common <i>mistakes</i></h2></div><div class="traps">'+TRAPS.map(function(t){return '<div class="trap"><b>'+esc(t[0])+'</b>'+t[1]+'</div>';}).join('')+'</div></section>';
+  out+='<div class="empty" id="empty" hidden>No entry matches that search.</div>';
+  document.getElementById("chapters").innerHTML=out;
+  document.getElementById("nav").innerHTML=nav;
+  document.querySelectorAll(".figmount").forEach(function(m){ FIGS[m.dataset.fig](m); });
+}
+function filter(){
+  var q=document.getElementById("q").value.trim().toLowerCase(), shown=0,total=0;
+  document.querySelectorAll(".card").forEach(function(c){ total++; var ok=!q||c.textContent.toLowerCase().indexOf(q)!==-1; c.hidden=!ok; if(ok) shown++; });
+  document.querySelectorAll(".trap").forEach(function(t){ total++; var ok=!q||t.textContent.toLowerCase().indexOf(q)!==-1; t.hidden=!ok; if(ok) shown++; });
+  document.querySelectorAll("section[data-ch]").forEach(function(s){
+    var isTrap=s.id==="traps";
+    s.querySelectorAll(".intro,.figmount,.tbl").forEach(function(e){ e.hidden=!!q; });
+    if(isTrap){
+      s.querySelectorAll(".traps").forEach(function(e){ e.hidden=false; });
+      s.hidden = q ? !s.querySelectorAll(".trap:not([hidden])").length : false;
+    }else{
+      s.hidden = q ? !s.querySelectorAll(".card:not([hidden])").length : false;
+    }
+  });
+  document.getElementById("hero-fig").hidden=!!q;
+  document.getElementById("empty").hidden=!q||shown>0;
+  document.getElementById("qn").textContent=q?(shown+"/"+total):"";
+}
+render();
+document.getElementById("q").addEventListener("input",filter);
+if("IntersectionObserver" in window){
+  var links={}; document.querySelectorAll("nav a[data-for]").forEach(function(a){ links[a.dataset.for]=a; });
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ document.querySelectorAll("nav a.on").forEach(function(a){a.classList.remove("on");}); var a=links[e.target.id]; if(a) a.classList.add("on"); } }); },{rootMargin:"-30% 0px -60% 0px"});
+  document.querySelectorAll("section[data-ch]").forEach(function(s){ io.observe(s); });
+}
+
+// Cheatsheet utilities
+(function(){
+  var themeBtn=document.getElementById("theme-toggle");
+  var printBtn=document.getElementById("print-page");
+  function syncThemeLabel(){ if(themeBtn) themeBtn.textContent=document.documentElement.dataset.theme==="dark"?"Light mode":"Dark mode"; }
+  if(themeBtn){ themeBtn.addEventListener("click",function(){ document.documentElement.dataset.theme=document.documentElement.dataset.theme==="dark"?"light":"dark"; try{ localStorage.setItem("ds4mfg-theme", document.documentElement.dataset.theme); }catch(e){} syncThemeLabel(); }); syncThemeLabel(); }
+  if(printBtn) printBtn.addEventListener("click",function(){ window.print(); });
+  document.addEventListener("keydown",function(e){
+    if((e.key==="/" || ((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k")) && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){
+      e.preventDefault(); var q=document.getElementById("q"); if(q){ q.focus(); q.select(); }
+    }
+    if(e.key==="Escape" && document.activeElement===document.getElementById("q")){ document.getElementById("q").value=""; filter(); document.getElementById("q").blur(); }
+  });
+})();
+
+</script>
+
+</body></html>
