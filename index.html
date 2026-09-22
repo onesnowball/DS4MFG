@@ -1,22 +1,16 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>DS4MFG · Student Statistics Cheatsheet</title>
 <meta name="description" content="A fast, student-friendly statistics reference for DS4MFG with formulas, Python examples, interpretation notes, common mistakes, and interactive manufacturing quality visuals.">
-<meta name="theme-color" content="#10243D">
+<meta name="theme-color" content="#0B1522">
 <meta property="og:title" content="DS4MFG Student Statistics Cheatsheet">
 <meta property="og:description" content="Formula, code, and interpretation help for DS4MFG statistics and manufacturing quality topics.">
 <meta property="og:type" content="website">
-<script>
-try{
-  var savedTheme = localStorage.getItem("ds4mfg-theme");
-  if(savedTheme) document.documentElement.dataset.theme = savedTheme;
-}catch(e){}
-</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<style>:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#0b1522;color:#edf4fa}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <style>
   :root{
     color-scheme:dark;
@@ -32,30 +26,6 @@ try{
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --math:'IBM Plex Serif',Georgia,serif;
     --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-  }
-  @media (prefers-color-scheme:light){
-    :root:not([data-theme="dark"]){
-      color-scheme:light;
-      --bg:#FBFAF7; --panel:#FFFFFF; --panel2:#F4F2EC; --raise:#F7F5F0;
-      --line:#E3DFD6; --line2:#ECE9E2;
-      --ink:#171E26; --mute:#5D6873; --faint:#8C959E;
-      --ac:#B07912; --ac-soft:rgba(176,121,18,.12); --ac-line:rgba(176,121,18,.45);
-      --ok:#1F8A55; --bad:#C7423D; --bad-soft:rgba(199,66,61,.18);
-      --spec:#2B6CB0; --spec-soft:rgba(43,108,176,.13);
-      --warn-soft:rgba(176,121,18,.22);
-      --grid:rgba(23,30,38,.06);
-    }
-  }
-  :root[data-theme="light"]{
-    color-scheme:light;
-    --bg:#FBFAF7; --panel:#FFFFFF; --panel2:#F4F2EC; --raise:#F7F5F0;
-    --line:#E3DFD6; --line2:#ECE9E2;
-    --ink:#171E26; --mute:#5D6873; --faint:#8C959E;
-    --ac:#B07912; --ac-soft:rgba(176,121,18,.12); --ac-line:rgba(176,121,18,.45);
-    --ok:#1F8A55; --bad:#C7423D; --bad-soft:rgba(199,66,61,.18);
-    --spec:#2B6CB0; --spec-soft:rgba(43,108,176,.13);
-    --warn-soft:rgba(176,121,18,.22);
-    --grid:rgba(23,30,38,.06);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -200,28 +170,6 @@ try{
    2026 CHEATSHEET REDESIGN — optimized for fast statistical lookup
    ===================================================================== */
 :root,
-:root[data-theme="light"]{
-  color-scheme:light;
-  --bg:#F3F6FA;
-  --panel:#FFFFFF;
-  --panel2:#F7F9FC;
-  --raise:#EEF2F7;
-  --line:#DCE3EB;
-  --line2:#E9EEF4;
-  --ink:#10243D;
-  --mute:#586A7D;
-  --faint:#8996A5;
-  --ac:#FFCB05;
-  --ac-soft:rgba(255,203,5,.16);
-  --ac-line:rgba(255,203,5,.58);
-  --ok:#2F7D62;
-  --bad:#C7473E;
-  --bad-soft:rgba(199,71,62,.10);
-  --spec:#2E6EA7;
-  --spec-soft:rgba(46,110,167,.10);
-  --warn-soft:rgba(255,203,5,.18);
-  --grid:rgba(16,36,61,.045);
-}
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#0B1522;
@@ -245,9 +193,7 @@ try{
   --grid:rgba(237,244,250,.04);
 }
 body{
-  background:
-    radial-gradient(circle at 85% -10%, rgba(255,203,5,.09), transparent 27rem),
-    var(--bg);
+  background:linear-gradient(180deg,#08111d 0%,var(--bg) 26rem);
   color:var(--ink);
   font-family:var(--sans);
   font-size:15px;
@@ -311,6 +257,46 @@ main{padding:0 40px 80px 44px; max-width:1180px; width:100%;}
 .rule-n{font:600 9px var(--mono); color:var(--spec); padding-top:2px;}
 .rule b{display:block; font-size:12px; line-height:1.25; color:var(--ink);}
 .rule span:not(.rule-n){display:block; margin-top:3px; font-size:10.5px; line-height:1.35; color:var(--mute);}
+.lab{margin:28px 0 28px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(145deg,color-mix(in srgb,var(--panel) 88%,#000),color-mix(in srgb,var(--panel2) 84%,#000)); box-shadow:0 18px 42px rgba(0,0,0,.18); overflow:hidden;}
+.lab-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding:18px 18px 10px; border-bottom:1px solid var(--line2);}
+.lab-head h2{margin:5px 0 0; font-size:22px; line-height:1.12; letter-spacing:-.03em;}
+.lab-label{margin:0; display:inline-flex;}
+.lab-label::after{display:none}
+.lab-meter{font:600 11px var(--mono); color:var(--ac); padding:7px 10px; border:1px solid var(--ac-line); border-radius:999px; background:var(--ac-soft); white-space:nowrap;}
+.lab-grid{display:grid; grid-template-columns:1.25fr 1fr; gap:1px; background:var(--line2);}
+.lab-card{background:color-mix(in srgb,var(--panel) 94%,#000); padding:17px; min-width:0;}
+.lab-card h3{margin:5px 0 12px; font-size:15px; line-height:1.25; letter-spacing:-.015em;}
+.tool-kicker{font:700 9px var(--mono); letter-spacing:.13em; text-transform:uppercase; color:var(--spec);}
+.ask-row{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px;}
+.ask-row input,.builder-grid select{width:100%; min-height:40px; border:1px solid var(--line); border-radius:10px; background:var(--panel2); color:var(--ink); padding:9px 11px; font:500 13px var(--sans);}
+.ask-row input:focus,.builder-grid select:focus{outline:3px solid var(--ac-soft); border-color:var(--ac-line);}
+.tool-btn{min-height:36px; border:1px solid var(--line); border-radius:10px; background:var(--raise); color:var(--ink); padding:8px 12px; font:700 12px var(--sans); cursor:pointer;}
+.tool-btn.primary{background:var(--ac); border-color:var(--ac); color:#0B1522;}
+.tool-btn:hover,.tool-btn:focus{outline:none; border-color:var(--ac-line); box-shadow:0 0 0 3px var(--ac-soft);}
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin:10px 0 0;}
+.chips button{border:1px solid var(--line); border-radius:999px; background:var(--panel2); color:var(--mute); padding:6px 9px; font:600 11px var(--sans); cursor:pointer;}
+.chips button:hover,.chips button:focus{color:var(--ink); border-color:var(--spec);}
+.result-stack{display:grid; gap:8px; margin-top:12px;}
+.result-hit,.decision-result,.quiz-feedback{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:11px 12px; color:var(--mute); font-size:12.5px; line-height:1.45;}
+.result-hit b,.decision-result b,.quiz-feedback b{color:var(--ink);}
+.result-hit a,.decision-result a{display:inline-flex; margin-top:7px; color:var(--ac); text-decoration:none; font:700 11px var(--mono);}
+.builder-grid{display:grid; grid-template-columns:1fr; gap:9px;}
+.builder-grid label{font:700 9px var(--mono); letter-spacing:.11em; text-transform:uppercase; color:var(--faint);}
+.builder-grid select{display:block; margin-top:5px; text-transform:none; letter-spacing:0;}
+.decision-result{margin-top:12px;}
+.quiz-prompt{min-height:56px; margin:0 0 12px; color:var(--mute); font-size:13px; line-height:1.5;}
+.quiz-options{display:grid; gap:8px;}
+.quiz-options button{width:100%; text-align:left; border:1px solid var(--line); border-radius:10px; background:var(--panel2); color:var(--ink); padding:9px 10px; font:600 12.5px var(--sans); cursor:pointer;}
+.quiz-options button.correct{border-color:rgba(101,206,161,.7); background:rgba(101,206,161,.13)}
+.quiz-options button.wrong{border-color:rgba(241,123,112,.75); background:rgba(241,123,112,.13)}
+.quiz-actions{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+.quiz-feedback{margin-top:10px; min-height:42px;}
+.pins-shelf{display:grid; gap:8px; min-height:84px;}
+.pin-empty{color:var(--faint); font-size:12.5px; line-height:1.5;}
+.pin-item{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; border:1px solid var(--line); border-radius:10px; background:var(--panel2); padding:9px 10px;}
+.pin-item a{color:var(--ink); text-decoration:none; font-weight:700; font-size:12.5px;}
+.pin-item span{display:block; margin-top:2px; color:var(--mute); font-size:11px;}
+.pin-item button{border:0; border-radius:8px; background:var(--raise); color:var(--faint); cursor:pointer; min-width:30px; min-height:30px;}
 .section-label{display:flex; align-items:center; gap:10px; margin:28px 0 10px; font:600 10px var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--faint);}
 .section-label::after{content:""; height:1px; flex:1; background:var(--line)}
 .fig{border-radius:13px; box-shadow:0 8px 24px rgba(16,36,61,.045); margin:14px 0 10px;}
@@ -318,7 +304,7 @@ main{padding:0 40px 80px 44px; max-width:1180px; width:100%;}
 .fig-title{font-size:10px; color:var(--spec);}
 .fig-ctl{padding:11px 14px; gap:10px;}
 .btn{border-radius:8px; padding:7px 11px; background:var(--panel);}
-.btn.ac{background:var(--ink); color:#fff; border-color:var(--ink);}
+.btn.ac{background:var(--ac); color:#0B1522; border-color:var(--ac);}
 .btn.ac:hover{filter:none; box-shadow:0 0 0 3px var(--ac-soft)}
 
 .ch{padding-top:54px;}
@@ -329,6 +315,7 @@ main{padding:0 40px 80px 44px; max-width:1180px; width:100%;}
 .ch .intro{font-size:14.5px; line-height:1.58; max-width:76ch; margin-top:10px;}
 .cards{gap:16px; margin-top:18px;}
 .card{border-radius:12px; box-shadow:0 6px 18px rgba(16,36,61,.035); scroll-margin-top:22px;}
+.card.spotlight{box-shadow:0 0 0 3px var(--ac-line),0 18px 36px rgba(0,0,0,.22);}
 .cd-head{padding:13px 16px; gap:9px; align-items:center; background:linear-gradient(180deg,var(--panel),color-mix(in srgb,var(--panel) 92%,var(--panel2)));}
 .cd-name{font-family:var(--sans); font-size:18px; font-weight:700; letter-spacing:-.018em;}
 .badge{font-size:8.5px; font-weight:600; border-radius:999px; padding:3px 7px;}
@@ -336,6 +323,12 @@ main{padding:0 40px 80px 44px; max-width:1180px; width:100%;}
 .b-out{background:var(--spec-soft); color:var(--spec); border:1px solid color-mix(in srgb,var(--spec) 25%,transparent)}
 .cd-when{display:block; flex-basis:100%; padding-left:0; color:var(--mute); font-size:12.5px; line-height:1.4;}
 .cd-when b{color:var(--ink); font-weight:600;}
+.cd-actions{display:flex; gap:7px; flex-wrap:wrap; margin-top:2px; flex-basis:100%;}
+.mini-btn{border:1px solid var(--line); border-radius:999px; background:var(--panel2); color:var(--mute); padding:5px 8px; font:700 10.5px var(--sans); cursor:pointer;}
+.mini-btn:hover,.mini-btn:focus,.mini-btn.active{outline:none; color:var(--ink); border-color:var(--ac-line); background:var(--ac-soft);}
+.mini-btn.copy-ok{color:var(--ok); border-color:rgba(101,206,161,.55);}
+.report-note{border-top:1px solid var(--line2); background:rgba(255,203,5,.08); color:var(--mute); padding:10px 16px; font-size:12.5px; line-height:1.5;}
+.toast{position:fixed; right:18px; bottom:18px; z-index:1000; border:1px solid var(--ac-line); background:#101D2C; color:var(--ink); border-radius:12px; padding:10px 13px; box-shadow:0 18px 45px rgba(0,0,0,.35); font:700 12px var(--sans);}
 .cd-two{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);}
 .cd-f{padding:17px 17px 18px;}
 .cd-c{background:var(--panel2);}
@@ -356,12 +349,13 @@ footer{font-size:11.5px; line-height:1.55; padding-bottom:20px;}
 
 @media(max-width:1060px){.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-link:nth-child(2n){border-right:none}.quick-link:nth-child(4n){border-right:none}.quick-link:nth-last-child(-n+4){border-bottom:1px solid var(--line2)}.quick-link:nth-last-child(-n+2){border-bottom:none}}
 @media(max-width:980px){
-  .app{grid-template-columns:1fr}.rail{padding:12px 16px;background:var(--panel); overflow:hidden;}.brand{font-size:20px}.brand-sub,.course-mark,.rail-actions,.rail-foot{display:none}nav ol{display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; -webkit-overflow-scrolling:touch}nav ol::-webkit-scrollbar{display:none}nav a{display:inline-flex; flex:0 0 auto; grid-template-columns:none; align-items:center; width:auto; max-width:none; white-space:nowrap; padding:7px 10px}nav a .k{display:none}.search{margin:8px 0}.hero{padding-top:28px}main{padding:0 18px 60px}.ch{scroll-margin-top:114px}.card{scroll-margin-top:114px}
+  .app{grid-template-columns:1fr}.rail{padding:12px 16px;background:var(--panel); overflow:hidden;}.brand{font-size:20px}.brand-sub,.course-mark,.rail-actions,.rail-foot{display:none}nav ol{display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; -webkit-overflow-scrolling:touch}nav ol::-webkit-scrollbar{display:none}nav a{display:inline-flex; flex:0 0 auto; grid-template-columns:none; align-items:center; width:auto; max-width:none; white-space:nowrap; padding:7px 10px}nav a .k{display:none}.search{margin:8px 0}.hero{padding-top:28px}main{padding:0 18px 60px}.ch{scroll-margin-top:114px}.card{scroll-margin-top:114px}.lab-grid{grid-template-columns:1fr}.lab-head{flex-direction:column}.ask-row{grid-template-columns:1fr}.lab-meter{align-self:flex-start}
 }
-@media(max-width:720px){.rules{grid-template-columns:1fr}.quick-grid{grid-template-columns:1fr}.quick-link{border-right:none!important;border-bottom:1px solid var(--line2)!important;min-height:96px}.quick-link:last-child{border-bottom:none!important}.cd-two{grid-template-columns:1fr}.hero h1{font-size:42px}.quick-head{align-items:flex-start;flex-direction:column;gap:4px}}
+@media(max-width:720px){.rules{grid-template-columns:1fr}.quick-grid{grid-template-columns:1fr}.quick-link{border-right:none!important;border-bottom:1px solid var(--line2)!important;min-height:96px}.quick-link:last-child{border-bottom:none!important}.cd-two{grid-template-columns:1fr}.hero h1{font-size:36px; line-height:1.03; letter-spacing:-.035em}.hero .lede{font-size:15.5px; line-height:1.58; max-width:100%}.quick-head{align-items:flex-start;flex-direction:column;gap:4px}.lab{border-radius:13px}.lab-card{padding:14px}.cd-actions{gap:6px}.toast{left:14px; right:14px; bottom:14px}}
+@media(max-width:380px){main{padding-inline:16px}.rail{padding-inline:15px}.hero h1{font-size:34px}.course-pill{font-size:9.5px}.ask-row input,.builder-grid select{font-size:12.5px}.tool-btn{width:100%}}
 @media print{
-  :root,:root[data-theme="dark"]{color-scheme:light;--bg:#fff;--panel:#fff;--panel2:#fafafa;--raise:#f4f4f4;--line:#d8d8d8;--line2:#e8e8e8;--ink:#111;--mute:#444;--faint:#777;--ac:#d8a800;--spec:#245d92;--grid:transparent}
-  body{background:#fff;font-size:11pt}.app{display:block}.rail,.hero .fig,.rail-actions{display:none!important}main{max-width:none;padding:0}.hero{padding:0 0 12px}.hero h1{font-size:30pt}.quickbox{box-shadow:none;break-inside:avoid}.ch{padding-top:24px;break-before:auto}.card{box-shadow:none;break-inside:avoid}.fig{box-shadow:none;break-inside:avoid}.cd-two{grid-template-columns:1fr 1fr}.cd-why,.cd-snag{background:#fff}.quick-link{min-height:0}.unofficial{display:none}footer{margin-top:24px}}
+  :root,:root[data-theme="dark"]{color-scheme:dark;--bg:#0B1522;--panel:#111F2F;--panel2:#0E1B29;--raise:#17283A;--line:#263A4D;--line2:#1C3042;--ink:#EDF4FA;--mute:#A8B7C5;--faint:#718294;--ac:#FFCB05;--spec:#76B8EC;--grid:transparent}
+  body{background:var(--bg); color:var(--ink); font-size:11pt; -webkit-print-color-adjust:exact; print-color-adjust:exact}.app{display:block}.rail,.hero .fig,.rail-actions{display:none!important}main{max-width:none;padding:0}.hero{padding:0 0 12px}.hero h1{font-size:30pt}.quickbox{box-shadow:none;break-inside:avoid}.ch{padding-top:24px;break-before:auto}.card{box-shadow:none;break-inside:avoid}.fig{box-shadow:none;break-inside:avoid}.cd-two{grid-template-columns:1fr 1fr}.quick-link{min-height:0}.unofficial{display:none}footer{margin-top:24px}}
 
 </style>
 </head>
@@ -374,8 +368,8 @@ footer{font-size:11.5px; line-height:1.55; padding-bottom:20px;}
     <div class="course-mark"><span class="course-dot"></span><span><b>Shao course</b><br>fast reference for analysis</span></div>
     <div class="search"><input id="q" type="search" placeholder="Search test, formula, concept…" aria-label="Search the cheatsheet"><span class="n" id="qn"></span></div>
     <nav><ol id="nav"></ol></nav>
-    <div class="rail-actions"><button class="rail-action" id="theme-toggle" type="button">Dark mode</button><button class="rail-action" id="print-page" type="button">Print / PDF</button></div>
-    <div class="rail-foot">Use search or jump by task. Core cards match the course; “extra” cards are useful extensions.</div>
+    <div class="rail-actions"><button class="rail-action" id="jump-quiz" type="button">Quiz sprint</button><button class="rail-action" id="print-page" type="button">Print / PDF</button></div>
+    <div class="rail-foot">Ask a question, pin useful methods, or jump by task. Everything is dark-mode only for projector and late-night use.</div>
   </aside>
 
   <main id="content">
@@ -398,6 +392,62 @@ footer{font-size:11.5px; line-height:1.55; padding-bottom:20px;}
           <a class="quick-link" href="#anova"><span class="quick-kicker">3+ groups</span><span class="quick-name">Compare several means</span><span class="quick-desc">ANOVA and effect size when two groups are not enough.</span><span class="quick-arrow">ANOVA →</span></a>
         </div>
       </div>
+
+      <section class="lab" id="mission-control" aria-label="Interactive DS4MFG study tools">
+        <div class="lab-head">
+          <div>
+            <span class="section-label lab-label">Interactive cockpit</span>
+            <h2>Make the cheat sheet answer back.</h2>
+          </div>
+          <div class="lab-meter" aria-live="polite"><span id="lab-pins-count">0</span> pinned · <span id="quiz-score">0/0</span> quiz</div>
+        </div>
+        <div class="lab-grid">
+          <article class="lab-card ask-card">
+            <div class="tool-kicker">Ask the sheet</div>
+            <h3>Describe your problem in plain English.</h3>
+            <div class="ask-row">
+              <input id="ask-input" type="search" placeholder="e.g., compare two machines with different variance" aria-label="Describe your statistics problem">
+              <button class="tool-btn primary" id="ask-run" type="button">Route</button>
+            </div>
+            <div class="chips" aria-label="Example prompts">
+              <button type="button" data-ask="Is the shaft mean off target when sigma is unknown?">mean off target</button>
+              <button type="button" data-ask="Compare defect rates between two machines">defect rates</button>
+              <button type="button" data-ask="Check if process can hold tolerance">capability</button>
+              <button type="button" data-ask="Three suppliers have different means">3 groups</button>
+            </div>
+            <div id="ask-result" class="result-stack" aria-live="polite"></div>
+          </article>
+
+          <article class="lab-card">
+            <div class="tool-kicker">Decision builder</div>
+            <h3>Answer three things. Get a method.</h3>
+            <div class="builder-grid">
+              <label>Goal<select id="goal-select"><option value="test-mean">Test a mean</option><option value="estimate-mean">Estimate a mean</option><option value="compare-means">Compare means</option><option value="compare-rates">Compare rates</option><option value="capability">Check capability</option><option value="control">Monitor over time</option><option value="power">Plan detection</option><option value="describe">Describe data</option></select></label>
+              <label>Shape<select id="shape-select"><option value="one">One sample</option><option value="two">Two groups</option><option value="many">3+ groups</option><option value="time">Time/subgroups</option><option value="rate">Counts / defects</option></select></label>
+              <label>σ known?<select id="sigma-select"><option value="unknown">No / estimate it</option><option value="known">Yes, from history</option><option value="na">Not relevant</option></select></label>
+            </div>
+            <div id="builder-result" class="decision-result"></div>
+          </article>
+
+          <article class="lab-card quiz-card" id="quiz-lab">
+            <div class="tool-kicker">Quiz sprint</div>
+            <h3>Practice picking the right tool.</h3>
+            <p id="quiz-prompt" class="quiz-prompt">Press start and I’ll throw you a DS4MFG scenario.</p>
+            <div id="quiz-options" class="quiz-options"></div>
+            <div class="quiz-actions">
+              <button class="tool-btn primary" id="quiz-next" type="button">Start</button>
+              <button class="tool-btn" id="quiz-reset" type="button">Reset score</button>
+            </div>
+            <div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div>
+          </article>
+
+          <article class="lab-card pins-card">
+            <div class="tool-kicker">Pinned methods</div>
+            <h3>Your tiny exam desk.</h3>
+            <div id="pins-shelf" class="pins-shelf" aria-live="polite"></div>
+          </article>
+        </div>
+      </section>
 
       <div class="rules" aria-label="Rules worth memorizing">
         <div class="rule"><span class="rule-n">01</span><div><b>Individual part → σ</b><span>Sample mean → σ/√n. Do not mix them.</span></div></div>
@@ -855,10 +905,11 @@ var FIGS = {
    RENDER
    ===================================================================== */
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function attr(s){ return esc(s).replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 function hi(src){ return esc(src).replace(/(#[^\n]*)/g,'<span class="cm">$1</span>').replace(/\b(import|from|as|for|in|if|else|return|True|False|None|min|max|abs|sum|len|lambda)\b/g,'<span class="kw">$1</span>'); }
 function tableHTML(t){ var h='<div class="tw"><table><tr>'+t.head.map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr>'; t.rows.forEach(function(r){ h+='<tr>'+r.map(function(c){return '<td class="n">'+c+'</td>';}).join('')+'</tr>'; }); return h+'</table></div>'; }
 function cardHTML(c){
-  var h='<article class="card" id="'+c.id+'" data-taught="'+(c.taught?'in':'out')+'"><div class="cd-head"><span class="cd-name">'+c.name+'</span><span class="badge '+(c.taught?'b-in">CORE':'b-out">EXTRA')+'</span><span class="cd-when"><b>Use when:</b> '+c.when+'</span></div>';
+  var h='<article class="card" id="'+c.id+'" data-taught="'+(c.taught?'in':'out')+'" data-card-id="'+c.id+'" data-name="'+attr(c.name)+'" data-when="'+attr(c.when)+'"><div class="cd-head"><span class="cd-name">'+c.name+'</span><span class="badge '+(c.taught?'b-in">CORE':'b-out">EXTRA')+'</span><span class="cd-when"><b>Use when:</b> '+c.when+'</span><div class="cd-actions"><button class="mini-btn pin-btn" type="button" data-pin="'+c.id+'">Pin</button><button class="mini-btn copy-btn" type="button" data-copy="'+c.id+'">Copy code</button><button class="mini-btn report-btn" type="button" data-report="'+c.id+'">Report starter</button></div></div>';
   h+='<div class="cd-two"><div class="cd-f"><span class="mini">Formula</span>'+c.eq;
   if(c.gl){ h+='<dl class="gl">'; c.gl.forEach(function(g){ h+='<dt>'+g[0]+'</dt><dd>'+g[1]+'</dd>'; }); h+='</dl>'; }
   h+='</div><div class="cd-c"><span class="mini">Python · SciPy</span><pre><code>'+hi(c.code)+'</code></pre></div></div>';
@@ -884,6 +935,188 @@ function render(){
   document.getElementById("nav").innerHTML=nav;
   document.querySelectorAll(".figmount").forEach(function(m){ FIGS[m.dataset.fig](m); });
 }
+
+var METHOD_LIST = [];
+var METHOD_BY_ID = {};
+var METHOD_TAGS = {
+  standardize:["z score","standardize","one part","sample mean","sigma","standard error","normal"],
+  moments:["mean","variance","std","standard deviation","describe","dataset","summary","ddof","sample"],
+  quart:["quartile","iqr","outlier","boxplot","fence"],
+  "ci-known":["confidence interval","estimate mean","sigma known","z interval","known sigma"],
+  "ci-unknown":["confidence interval","estimate mean","sigma unknown","t interval","unknown sigma","sem"],
+  "ci-var":["variance interval","spread interval","chi square interval","sigma squared"],
+  ztest:["z test","test mean","sigma known","hypothesis","p value","target"],
+  ttest1:["t test","one sample","test mean","sigma unknown","target","hypothesis"],
+  chivar:["variance test","spread changed","chi square variance"],
+  "pooled-t":["two means","compare means","two groups","equal variance","pooled","machines","suppliers"],
+  "welch-t":["two means","compare means","different variance","unequal variance","welch"],
+  prop2:["proportion","rate","defect rate","yield","counts","two rates"],
+  ftest:["variance ratio","two spreads","levene","equal variance"],
+  capability:["capability","cp","cpk","tolerance","specification","scrap","ppm","usl","lsl"],
+  power:["power","beta","alpha","sample size","detection","miss","false alarm"],
+  xbarR:["control chart","spc","xbar","r chart","subgroup","monitor","over time"],
+  chi2ind:["independence","contingency","category","defect by machine","chi square counts"],
+  anova:["anova","three groups","3 groups","several means","suppliers","effect size"]
+};
+var DECISIONS = {
+  "test-mean|one|known":"ztest",
+  "test-mean|one|unknown":"ttest1",
+  "estimate-mean|one|known":"ci-known",
+  "estimate-mean|one|unknown":"ci-unknown",
+  "compare-means|two|unknown":"pooled-t",
+  "compare-means|two|known":"pooled-t",
+  "compare-means|two|na":"welch-t",
+  "compare-means|many|unknown":"anova",
+  "compare-means|many|known":"anova",
+  "compare-means|many|na":"anova",
+  "compare-rates|rate|na":"prop2",
+  "compare-rates|two|na":"prop2",
+  "capability|one|na":"capability",
+  "capability|time|na":"capability",
+  "control|time|na":"xbarR",
+  "power|one|known":"power",
+  "power|one|unknown":"power",
+  "power|time|known":"power",
+  "power|time|unknown":"power",
+  "power|time|na":"power",
+  "describe|one|na":"moments"
+};
+var QUIZ = [
+  {q:"A process has n = 16 shafts, x̄ = 10.012, and historical σ = 0.020. Is the mean off target?", a:"ztest", why:"Historical σ makes this a z-test on the mean."},
+  {q:"Two machines produce continuous diameters. Their sample spreads look very different.", a:"welch-t", why:"Welch keeps the two variance estimates separate."},
+  {q:"You need to know if a centered process can hold ±0.050 mm tolerance.", a:"capability", why:"Cp/Cpk and defect ppm compare the bell curve to spec limits."},
+  {q:"A shop records subgroup means every hour and wants to catch drift.", a:"xbarR", why:"An x̄/R chart monitors a running process with subgroup data."},
+  {q:"Three suppliers have different average tensile strengths.", a:"anova", why:"ANOVA compares 3+ means without stacking pairwise tests."},
+  {q:"Machine A has 12 defects in 600 parts; machine B has 31 in 640.", a:"prop2", why:"Those are rates/counts, so use a two-proportion z test."},
+  {q:"A dataset has one suspiciously high point and you need a defensible flag.", a:"quart", why:"IQR fences turn an outlier hunch into a stated rule."},
+  {q:"You want to plan subgroup size so a 1σ shift is caught more often.", a:"power", why:"Power links α, β, shift size, and n."}
+];
+var quizState = {score:0,total:0,current:null};
+
+function stripHTML(s){ var d=document.createElement("div"); d.innerHTML=s; return d.textContent || d.innerText || ""; }
+function initMethodIndex(){
+  METHOD_LIST = [];
+  METHOD_BY_ID = {};
+  CH.forEach(function(ch){
+    ch.cards.forEach(function(c){
+      var item = {id:c.id,name:stripHTML(c.name),when:stripHTML(c.when),code:c.code,why:stripHTML(c.why||""),snag:stripHTML(c.snag||""),chapter:stripHTML(ch.title.replace(/<[^>]+>/g,"")),tags:METHOD_TAGS[c.id]||[]};
+      item.search = [item.name,item.when,item.why,item.snag,item.chapter,item.tags.join(" ")].join(" ").toLowerCase();
+      METHOD_LIST.push(item); METHOD_BY_ID[item.id]=item;
+    });
+  });
+}
+function toast(msg){
+  var old=document.querySelector(".toast"); if(old) old.remove();
+  var t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 1800);
+}
+function copyText(txt, done){
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done).catch(function(){ fallbackCopy(txt); done(); }); }
+  else{ fallbackCopy(txt); done(); }
+}
+function fallbackCopy(txt){ var ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.left="-999px"; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} ta.remove(); }
+function jumpToCard(id){ var el=document.getElementById(id); if(el){ el.scrollIntoView({behavior:"smooth",block:"start"}); el.classList.add("spotlight"); setTimeout(function(){el.classList.remove("spotlight");},1300); } }
+function rankMethods(q){
+  q = q.toLowerCase().trim();
+  if(!q) return [];
+  var words = q.split(/[^a-z0-9σμχαβ]+/).filter(Boolean);
+  return METHOD_LIST.map(function(m){
+    var score=0;
+    words.forEach(function(w){ if(m.search.indexOf(w)!==-1) score += w.length>3 ? 3 : 1; });
+    m.tags.forEach(function(tag){ if(q.indexOf(tag)!==-1) score += 8; });
+    if(q.indexOf("different variance")!==-1 && m.id==="welch-t") score += 18;
+    if(q.indexOf("equal variance")!==-1 && m.id==="pooled-t") score += 14;
+    if(q.indexOf("3")!==-1 && m.id==="anova") score += 10;
+    if(q.indexOf("defect")!==-1 && m.id==="prop2") score += 9;
+    if(q.indexOf("tolerance")!==-1 && m.id==="capability") score += 12;
+    if(q.indexOf("unknown")!==-1 && (m.id==="ttest1" || m.id==="ci-unknown")) score += 8;
+    if(q.indexOf("known")!==-1 && (m.id==="ztest" || m.id==="ci-known")) score += 8;
+    return {m:m,score:score};
+  }).filter(function(x){return x.score>0;}).sort(function(a,b){return b.score-a.score;}).slice(0,3);
+}
+function renderAsk(){
+  var input=document.getElementById("ask-input"), box=document.getElementById("ask-result");
+  if(!input || !box) return;
+  var hits=rankMethods(input.value);
+  if(!hits.length){ box.innerHTML='<div class="result-hit">Try words like <b>mean</b>, <b>defect rate</b>, <b>capability</b>, <b>control chart</b>, or <b>three groups</b>.</div>'; return; }
+  box.innerHTML=hits.map(function(h){
+    return '<div class="result-hit"><b>'+esc(h.m.name)+'</b><br>'+esc(h.m.when)+'<br><a href="#'+h.m.id+'" data-jump="'+h.m.id+'">open method →</a></div>';
+  }).join("");
+}
+function builderChoice(){
+  var key=document.getElementById("goal-select").value+"|"+document.getElementById("shape-select").value+"|"+document.getElementById("sigma-select").value;
+  var id=DECISIONS[key] || DECISIONS[key.replace("|known","|unknown")] || DECISIONS[key.replace("|unknown","|na")] || "standardize";
+  var m=METHOD_BY_ID[id], box=document.getElementById("builder-result");
+  if(box && m) box.innerHTML='<b>'+esc(m.name)+'</b><br>'+esc(m.when)+'<br><a href="#'+m.id+'" data-jump="'+m.id+'">open method →</a>';
+}
+function getPins(){ try{return JSON.parse(localStorage.getItem("ds4mfg-pins")||"[]");}catch(e){return [];} }
+function setPins(p){ try{localStorage.setItem("ds4mfg-pins",JSON.stringify(p));}catch(e){} renderPins(); }
+function togglePin(id){
+  var p=getPins(), i=p.indexOf(id);
+  if(i>=0){ p.splice(i,1); toast("Unpinned method"); } else { p.unshift(id); toast("Pinned method"); }
+  setPins(p.slice(0,8));
+}
+function renderPins(){
+  var p=getPins(), shelf=document.getElementById("pins-shelf"), count=document.getElementById("lab-pins-count");
+  if(count) count.textContent=p.length;
+  document.querySelectorAll(".pin-btn").forEach(function(b){ b.classList.toggle("active", p.indexOf(b.dataset.pin)>=0); b.textContent=p.indexOf(b.dataset.pin)>=0?"Pinned":"Pin"; });
+  if(!shelf) return;
+  if(!p.length){ shelf.innerHTML='<div class="pin-empty">Pin the methods you keep mixing up. They stay here on this device.</div>'; return; }
+  shelf.innerHTML=p.map(function(id){
+    var m=METHOD_BY_ID[id]; if(!m) return "";
+    return '<div class="pin-item"><a href="#'+m.id+'" data-jump="'+m.id+'">'+esc(m.name)+'<span>'+esc(m.when)+'</span></a><button type="button" data-unpin="'+m.id+'" aria-label="Remove '+esc(m.name)+'">×</button></div>';
+  }).join("");
+}
+function reportStarter(id){
+  var m=METHOD_BY_ID[id]; if(!m) return;
+  var card=document.getElementById(id), old=card.querySelector(".report-note");
+  if(old){ old.remove(); return; }
+  var note=document.createElement("div"); note.className="report-note";
+  note.innerHTML='<b>Report starter:</b> I used <b>'+esc(m.name)+'</b> because '+esc(m.when.toLowerCase())+' The result should be interpreted in process units first, then as a decision about variation, centering, or evidence against the null.';
+  card.appendChild(note);
+  note.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function quizNext(){
+  var q=QUIZ[Math.floor(Math.random()*QUIZ.length)], wrong=METHOD_LIST.filter(function(m){return m.id!==q.a;}).sort(function(){return Math.random()-.5;}).slice(0,3);
+  var opts=wrong.concat([METHOD_BY_ID[q.a]]).sort(function(){return Math.random()-.5;});
+  quizState.current=q;
+  document.getElementById("quiz-prompt").textContent=q.q;
+  document.getElementById("quiz-feedback").textContent="";
+  document.getElementById("quiz-next").textContent="Next scenario";
+  document.getElementById("quiz-options").innerHTML=opts.map(function(m){return '<button type="button" data-answer="'+m.id+'">'+esc(m.name)+'</button>';}).join("");
+}
+function quizAnswer(id, btn){
+  var q=quizState.current; if(!q || btn.disabled) return;
+  quizState.total++;
+  var ok=id===q.a; if(ok) quizState.score++;
+  document.querySelectorAll("#quiz-options button").forEach(function(b){ b.disabled=true; b.classList.toggle("correct", b.dataset.answer===q.a); if(b===btn && !ok) b.classList.add("wrong"); });
+  document.getElementById("quiz-feedback").innerHTML=(ok?"<b>Correct.</b> ":"<b>Close.</b> ")+esc(q.why)+' <a href="#'+q.a+'" data-jump="'+q.a+'">review →</a>';
+  var s=document.getElementById("quiz-score"); if(s) s.textContent=quizState.score+"/"+quizState.total;
+}
+function initInteractive(){
+  initMethodIndex();
+  renderPins();
+  builderChoice();
+  renderAsk();
+  document.addEventListener("click",function(e){
+    var ask=e.target.closest("[data-ask]"), jump=e.target.closest("[data-jump]"), pin=e.target.closest("[data-pin]"), unpin=e.target.closest("[data-unpin]"), copy=e.target.closest("[data-copy]"), report=e.target.closest("[data-report]"), ans=e.target.closest("[data-answer]");
+    if(ask){ document.getElementById("ask-input").value=ask.dataset.ask; renderAsk(); }
+    if(jump){ e.preventDefault(); jumpToCard(jump.dataset.jump); }
+    if(pin){ togglePin(pin.dataset.pin); }
+    if(unpin){ togglePin(unpin.dataset.unpin); }
+    if(copy){ var m=METHOD_BY_ID[copy.dataset.copy]; if(m) copyText(m.code,function(){ copy.classList.add("copy-ok"); copy.textContent="Copied"; toast("Code copied"); setTimeout(function(){copy.classList.remove("copy-ok"); copy.textContent="Copy code";},1200); }); }
+    if(report){ reportStarter(report.dataset.report); }
+    if(ans){ quizAnswer(ans.dataset.answer, ans); }
+  });
+  var askRun=document.getElementById("ask-run"), askInput=document.getElementById("ask-input");
+  if(askRun) askRun.addEventListener("click",renderAsk);
+  if(askInput) askInput.addEventListener("input",renderAsk);
+  ["goal-select","shape-select","sigma-select"].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener("change",builderChoice); });
+  var qn=document.getElementById("quiz-next"), qr=document.getElementById("quiz-reset"), jq=document.getElementById("jump-quiz");
+  if(qn) qn.addEventListener("click",quizNext);
+  if(qr) qr.addEventListener("click",function(){ quizState.score=0; quizState.total=0; document.getElementById("quiz-score").textContent="0/0"; document.getElementById("quiz-feedback").textContent="Score reset."; });
+  if(jq) jq.addEventListener("click",function(){ document.getElementById("quiz-lab").scrollIntoView({behavior:"smooth",block:"center"}); });
+}
 function filter(){
   var q=document.getElementById("q").value.trim().toLowerCase(), shown=0,total=0;
   document.querySelectorAll(".card").forEach(function(c){ total++; var ok=!q||c.textContent.toLowerCase().indexOf(q)!==-1; c.hidden=!ok; if(ok) shown++; });
@@ -903,6 +1136,7 @@ function filter(){
   document.getElementById("qn").textContent=q?(shown+"/"+total):"";
 }
 render();
+initInteractive();
 document.getElementById("q").addEventListener("input",filter);
 if("IntersectionObserver" in window){
   var links={}; document.querySelectorAll("nav a[data-for]").forEach(function(a){ links[a.dataset.for]=a; });
@@ -912,10 +1146,7 @@ if("IntersectionObserver" in window){
 
 // Cheatsheet utilities
 (function(){
-  var themeBtn=document.getElementById("theme-toggle");
   var printBtn=document.getElementById("print-page");
-  function syncThemeLabel(){ if(themeBtn) themeBtn.textContent=document.documentElement.dataset.theme==="dark"?"Light mode":"Dark mode"; }
-  if(themeBtn){ themeBtn.addEventListener("click",function(){ document.documentElement.dataset.theme=document.documentElement.dataset.theme==="dark"?"light":"dark"; try{ localStorage.setItem("ds4mfg-theme", document.documentElement.dataset.theme); }catch(e){} syncThemeLabel(); }); syncThemeLabel(); }
   if(printBtn) printBtn.addEventListener("click",function(){ window.print(); });
   document.addEventListener("keydown",function(e){
     if((e.key==="/" || ((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k")) && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){
